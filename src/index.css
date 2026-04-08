@@ -1,0 +1,52 @@
+@import "tailwindcss";
+
+@theme {
+  --color-foresty-bg: #0a0a0c;
+  --color-foresty-accent: #3b82f6;
+  --color-foresty-success: #10b981;
+}
+
+@layer base {
+  :root {
+    background-color: #ffffff;
+    color: #0c0c0c;
+  }
+
+  body {
+    @apply antialiased font-sans bg-white text-zinc-900;
+  }
+}
+
+@layer utilities {
+  .glass {
+    @apply bg-white/5 backdrop-blur-xl border border-white/10;
+  }
+  
+  .text-glow {
+    text-shadow: 0 0 20px rgba(59, 130, 246, 0.5);
+  }
+
+  .bg-grid {
+    background-image: radial-gradient(circle, rgba(255,255,255,0.05) 1px, transparent 1px);
+    background-size: 30px 30px;
+  }
+}
+
+/* Custom Animations */
+@keyframes shimmer {
+  from { transform: translateX(-100%); }
+  to { transform: translateX(100%); }
+}
+
+.animate-shimmer {
+  animation: shimmer 2s infinite;
+}
+
+@keyframes pulse-soft {
+  0%, 100% { opacity: 0.3; transform: scale(1); }
+  50% { opacity: 0.5; transform: scale(1.05); }
+}
+
+.animate-pulse-soft {
+  animation: pulse-soft 8s ease-in-out infinite;
+}
