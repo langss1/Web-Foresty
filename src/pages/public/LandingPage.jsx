@@ -9,8 +9,8 @@ const LandingPage = () => {
             <section className="mb-10 border p-5">
                 <h1 className="text-2xl font-bold border-b pb-2 mb-4">Tentang Foresty Lab</h1>
                 <p>
-                    Forestry Cybersecurity and Digital Forensic Lab merupakan laboratorium riset yang berada di bawah naungan 
-                    Telkom University, khususnya di bawah Kelompok Keahlian CITI (Cyber Infrastructure and Trusted Intelligence) dan 
+                    Forestry Cybersecurity and Digital Forensic Lab merupakan laboratorium riset yang berada di bawah naungan
+                    Telkom University, khususnya di bawah Kelompok Keahlian CITI (Cyber Infrastructure and Trusted Intelligence) dan
                     FIF (Fakultas Informatika).
                 </p>
             </section>
@@ -63,8 +63,8 @@ const LandingPage = () => {
                         { label: "Penghargaan", path: "/awards", icon: Award },
                         { label: "Project & Riset", path: "/projects", icon: Database }
                     ].map((menu, i) => (
-                        <Link 
-                            key={i} 
+                        <Link
+                            key={i}
                             to={menu.path}
                             className="p-4 border text-center hover:bg-gray-100 block"
                         >
