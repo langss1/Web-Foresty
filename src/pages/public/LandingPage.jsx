@@ -1,6 +1,6 @@
 import React from 'react';
 import { Link } from 'react-router-dom';
-import { Database, GraduationCap, Award, Shield, Search, Crosshair, Users, BookOpen, Key } from 'lucide-react';
+import { Database, GraduationCap, Award, Shield, Search, Crosshair, BookOpen, Key } from 'lucide-react';
 import { motion } from 'framer-motion';
 import maskotImg from '../../assets/Maskot.png';
 
