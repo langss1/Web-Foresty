@@ -21,65 +21,11 @@
   .glass {
     @apply bg-black/60 backdrop-blur-xl border border-red-900/30;
   }
-  
-  .text-glow {
-    text-shadow: 0 0 15px rgba(237, 27, 36, 0.6);
-  }
-  
-  .text-glow-dark {
-    text-shadow: 0 0 20px rgba(178, 41, 48, 0.8);
-  }
-
-  .bg-grid {
-    background-size: 40px 40px;
-    background-image: 
-      linear-gradient(to right, rgba(237, 27, 36, 0.05) 1px, transparent 1px),
-      linear-gradient(to bottom, rgba(237, 27, 36, 0.05) 1px, transparent 1px);
-  }
-
-  .bg-cyber-dots {
-    background-image: radial-gradient(circle, rgba(178, 41, 48, 0.15) 1px, transparent 1px);
-    background-size: 20px 20px;
-  }
-}
-
-/* Custom Scrollbar for Cyber Theme */
-::-webkit-scrollbar {
-  width: 8px;
-}
-::-webkit-scrollbar-track {
-  background: #0a0a0a;
-}
-::-webkit-scrollbar-thumb {
-  background: #b22930;
-  border-radius: 4px;
-}
-::-webkit-scrollbar-thumb:hover {
-  background: #ed1b24;
 }
 
 /* Base body styles */
 body {
-  background-color: #050505;
+  background-color: #111111;
   color: #e5e5e5;
   overflow-x: hidden;
-}
-
-/* Custom Animations */
-@keyframes shimmer {
-  from { transform: translateX(-100%); }
-  to { transform: translateX(100%); }
-}
-
-.animate-shimmer {
-  animation: shimmer 2s infinite;
-}
-
-@keyframes pulse-soft {
-  0%, 100% { opacity: 0.3; transform: scale(1); }
-  50% { opacity: 0.5; transform: scale(1.05); }
-}
-
-.animate-pulse-soft {
-  animation: pulse-soft 8s ease-in-out infinite;
 }
