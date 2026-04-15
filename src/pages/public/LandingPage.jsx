@@ -8,91 +8,56 @@ const LandingPage = () => {
     return (
         <div className="min-h-screen bg-[#110000] text-gray-200 font-sans selection:bg-primary selection:text-white">
             {/* Header/Hero Section */}
-            <section className="relative w-full overflow-hidden">
-                {/* Global Background Animation for Hero */}
-                <div className="absolute inset-0 flex items-center justify-center pointer-events-none opacity-20 md:opacity-30">
+            <section className="relative w-full overflow-hidden min-h-[90vh] flex items-center">
+                {/* Global Background Animation - Scaled down and moved to edges as watermarks */}
+                <div className="absolute inset-0 pointer-events-none opacity-5 md:opacity-10">
                     <motion.div
-                        animate={{ scale: [1, 1.05, 1], rotate: [0, 2, -2, 0] }}
-                        transition={{ duration: 6, repeat: Infinity, ease: "easeInOut" }}
-                        className="absolute z-0"
+                        animate={{ scale: [1, 1.05, 1], rotate: [0, 3, -3, 0] }}
+                        transition={{ duration: 15, repeat: Infinity, ease: "easeInOut" }}
+                        className="absolute -right-10 -top-10 opacity-30"
                     >
-                        <Shield className="w-[400px] h-[400px] md:w-[600px] md:h-[600px] text-primary-dark/50" strokeWidth={0.5} />
+                        <Shield className="w-[300px] h-[300px] md:w-[500px] md:h-[500px] text-primary-dark" strokeWidth={0.1} />
                     </motion.div>
 
-                    <motion.div
-                        animate={{ rotate: 360 }}
-                        transition={{ duration: 40, repeat: Infinity, ease: "linear" }}
-                        className="absolute w-[600px] h-[600px] md:w-[900px] md:h-[900px] flex items-center justify-center pointer-events-none"
-                    >
-                        {/* Key Icon - representing encryption */}
-                        <motion.div 
-                            className="absolute top-[5%] left-[20%] text-primary/70"
-                            animate={{ rotate: -360 }} 
-                            transition={{ duration: 40, repeat: Infinity, ease: "linear" }}
-                        >
-                            <Key className="w-16 h-16 md:w-24 md:h-24" />
-                        </motion.div>
-                        
-                        {/* Crosshair Icon - representing pentest/targeting */}
-                        <motion.div 
-                            className="absolute bottom-[15%] right-[10%] text-primary/80"
-                            animate={{ rotate: -360 }} 
-                            transition={{ duration: 40, repeat: Infinity, ease: "linear" }}
-                        >
-                            <Crosshair className="w-20 h-20 md:w-32 md:h-32" />
-                        </motion.div>
-                        
-                        {/* Search Icon - representing forensics/analysis */}
-                        <motion.div 
-                            className="absolute top-[30%] right-[3%] text-primary/50"
-                            animate={{ rotate: -360 }} 
-                            transition={{ duration: 40, repeat: Infinity, ease: "linear" }}
-                        >
-                            <Search className="w-14 h-14 md:w-20 md:h-20" />
-                        </motion.div>
-                        
-                        {/* Database Icon - representing data security */}
-                        <motion.div 
-                            className="absolute bottom-[20%] left-[8%] text-primary-dark/60"
-                            animate={{ rotate: -360 }} 
-                            transition={{ duration: 40, repeat: Infinity, ease: "linear" }}
-                        >
-                            <Database className="w-16 h-16 md:w-24 md:h-24" />
-                        </motion.div>
-                    </motion.div>
+                    <div className="absolute inset-0 overflow-hidden">
+                        <Key className="absolute top-[15%] left-[2%] w-12 h-12 text-primary/20 -rotate-12" />
+                        <Database className="absolute bottom-[20%] left-[5%] w-16 h-16 text-primary-dark/10 rotate-12" />
+                        <Search className="absolute top-[8%] right-[10%] w-10 h-10 text-primary/10" />
+                        <Crosshair className="absolute bottom-[10%] right-[20%] w-20 h-20 text-primary/30" />
+                    </div>
                 </div>
 
-                <div className="relative max-w-6xl mx-auto px-6 pt-40 pb-32 z-10 grid lg:grid-cols-2 gap-10 items-center">
-                    <div className="max-w-xl space-y-6">
-                        <p className="text-primary-dark text-sm tracking-widest uppercase mb-2 font-bold drop-shadow-md">Research Laboratory</p>
-                        <h1 className="text-6xl md:text-7xl lg:text-8xl font-bold leading-tight text-white mb-4 drop-shadow-2xl">
+                <div className="relative max-w-6xl mx-auto px-6 pt-32 pb-32 z-10 grid lg:grid-cols-2 gap-10 items-center w-full">
+                    <div className="space-y-6">
+                        <p className="text-primary-dark text-sm tracking-widest uppercase mb-2 font-bold opacity-80">Research Laboratory</p>
+                        <h1 className="text-6xl md:text-7xl lg:text-8xl font-bold leading-[1.05] text-white mb-4">
                             FORESTY <br />
                             <span className="text-transparent bg-clip-text bg-gradient-to-r from-red-200 to-primary">LAB.</span>
                         </h1>
                         
-                        <p className="text-gray-200 max-w-xl mt-6 text-lg md:text-xl leading-relaxed drop-shadow-md">
+                        <p className="text-gray-300 max-w-lg mt-6 text-lg md:text-xl leading-relaxed">
                             The center of excellence for cybersecurity and digital forensics technology development from the Faculty of Informatics.
                         </p>
                         
                         <div className="pt-8">
-                            <Link to="/team" className="inline-block bg-gradient-to-r from-primary to-primary-dark hover:from-primary-dark hover:to-primary transition-all duration-300 text-white font-semibold py-4 px-12 rounded-full shadow-[0_4px_30px_rgba(237,27,36,0.5)] hover:shadow-[0_4px_35px_rgba(237,27,36,0.8)] hover:-translate-y-1">
+                            <Link to="/team" className="inline-block bg-gradient-to-r from-primary to-primary-dark hover:from-primary-dark hover:to-primary transition-all duration-300 text-white font-semibold py-4 px-12 rounded-full shadow-[0_4px_30px_rgba(237,27,36,0.3)] hover:shadow-[0_4px_35px_rgba(237,27,36,0.5)] hover:-translate-y-1">
                                 Join Us
                             </Link>
                         </div>
                     </div>
 
-                    <div className="flex justify-center lg:justify-end items-center relative z-20 mt-12 lg:mt-0">
+                    <div className="flex justify-center lg:justify-end items-center relative z-20">
                         <motion.div
-                            animate={{ y: [-15, 15, -15] }}
-                            transition={{ duration: 5, repeat: Infinity, ease: "easeInOut" }}
-                            className="relative"
+                            animate={{ y: [-12, 12, -12] }}
+                            transition={{ duration: 6, repeat: Infinity, ease: "easeInOut" }}
+                            className="relative flex items-center justify-center p-4"
                         >
                             {/* Glow Effect behind mascot */}
-                            <div className="absolute inset-0 bg-primary/20 blur-[80px] rounded-full -z-10"></div>
+                            <div className="absolute w-[100%] h-[100%] bg-primary/20 blur-[90px] rounded-full -z-10 animate-pulse"></div>
                             <img 
-                                src={maskotImg} 
+                                src="/Maskot.png" 
                                 alt="Foresty Lab Mascot" 
-                                className="w-[300px] md:w-[400px] lg:w-[480px] h-auto object-contain drop-shadow-[0_0_35px_rgba(237,27,36,0.5)]" 
+                                className="w-[280px] md:w-[380px] lg:w-[420px] h-auto object-contain relative z-30 drop-shadow-[0_0_40px_rgba(237,27,36,0.4)]"
                             />
                         </motion.div>
                     </div>
@@ -103,14 +68,13 @@ const LandingPage = () => {
             <section className="relative max-w-6xl mx-auto px-6 py-20">
                 <h2 className="text-3xl font-bold text-center mb-16 text-white tracking-wide">Our Focus & Objectives</h2>
                 
-                <div className="grid grid-cols-1 md:grid-cols-3 gap-6 pt-8">
+                <div className="grid grid-cols-1 md:grid-cols-3 gap-6 pt-8 text-center items-center">
                     {[
                         { num: "1", title: "Cybersecurity Research", desc: "Conducting in-depth research on the latest security trends and digital forensic analysis methods." },
                         { num: "2", title: "Study Group & CTF", desc: "A platform for students to learn collaboratively and prepare for cyber competitions like Capture The Flag." },
                         { num: "3", title: "Industrial Pentesting", desc: "Performing penetration testing and cybersecurity audits for private and industrial sectors." }
                     ].map((item, i) => (
                         <div key={i} className="relative bg-gradient-to-b from-[#280506] to-[#140001] border border-primary-dark/30 p-8 rounded-3xl text-center flex flex-col items-center hover:border-primary-dark transition-colors shadow-xl">
-                            {/* Number Badge Overlap - matching image style */}
                             <div className="absolute -top-6 left-1/2 -translate-x-1/2 w-14 h-14 rounded-full bg-gradient-to-br from-primary to-[#780105] text-white font-semibold flex items-center justify-center text-xl shadow-[0_4px_15px_rgba(237,27,36,0.6)]">
                                 {item.num}
                             </div>
@@ -123,11 +87,8 @@ const LandingPage = () => {
 
             {/* Icons Section (Sesuai gambar "Kondisi kamu...") */}
             <section className="relative max-w-5xl mx-auto px-6 py-20 border-t border-primary-dark/20">
-                {/* Background glow for this section */}
                 <div className="absolute inset-0 bg-[#250103] opacity-50 pointer-events-none -z-10"></div>
-                
                 <h2 className="text-2xl font-bold text-center mb-16 text-white tracking-wide">Our Areas of Expertise Include:</h2>
-                
                 <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-4 gap-x-6 gap-y-12">
                     {[
                         { icon: Search, desc: "Digital Forensics Toolkit Development" },
@@ -136,7 +97,6 @@ const LandingPage = () => {
                         { icon: BookOpen, desc: "CTF Scenario & Platform Design" }
                     ].map((item, i) => (
                         <div key={i} className="flex flex-col items-center text-center">
-                            {/* Glowing Red Icon Box */}
                             <div className="w-16 h-16 rounded-2xl bg-gradient-to-br from-[#800508] to-primary flex items-center justify-center mb-6 shadow-[0_0_25px_rgba(237,27,36,0.4)] border border-red-500/30">
                                 <item.icon className="w-7 h-7 text-white" />
                             </div>
@@ -156,7 +116,6 @@ const LandingPage = () => {
                         { num: "02.", label: "Student Achievements", desc: "History of victories in various cyber competitions.", path: "/prestasi" },
                         { num: "03.", label: "Laboratory Awards", desc: "Institutional and public awards for research contributions.", path: "/awards" },
                         { num: "04.", label: "Projects & Research", desc: "Journal publications, papers, and project collaborations.", path: "/projects" }
-
                     ].map((menu, i) => (
                         <Link 
                             key={i} 
