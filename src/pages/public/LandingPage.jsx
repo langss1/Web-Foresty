@@ -12,19 +12,19 @@ const LandingPage = () => {
                 <div className="absolute bottom-10 left-10 w-[400px] h-[400px] bg-[#1a0506] blur-[150px] rounded-full pointer-events-none"></div>
                 
                 <div className="relative z-10 space-y-6">
-                    <p className="text-gray-400 text-sm tracking-widest uppercase mb-2">Laboratorium Riset</p>
+                    <p className="text-gray-400 text-sm tracking-widest uppercase mb-2">Research Laboratory</p>
                     <h1 className="text-5xl md:text-6xl lg:text-7xl font-bold leading-tight text-white mb-4">
                         FORESTY <br />
                         <span className="text-transparent bg-clip-text bg-gradient-to-r from-white to-gray-400">LAB.</span>
                     </h1>
                     
                     <p className="text-gray-300 max-w-md mt-6 text-base leading-relaxed">
-                        Pusat keunggulan pengembangan teknologi keamanan siber dan digital forensik dari Fakultas Informatika.
+                        The center of excellence for cybersecurity and digital forensics technology development from the Faculty of Informatics.
                     </p>
                     
                     <div className="pt-8">
                         <Link to="/team" className="inline-block bg-gradient-to-r from-primary to-primary-dark hover:from-primary-dark hover:to-primary transition-all duration-300 text-white font-medium py-3 px-10 rounded-full shadow-[0_4px_15px_rgba(237,27,36,0.4)] hover:shadow-lg hover:-translate-y-0.5">
-                            Bergabung
+                            Join Us
                         </Link>
                     </div>
                 </div>
@@ -39,13 +39,13 @@ const LandingPage = () => {
 
             {/* Apa yang termasuk (What We Do / Goals) */}
             <section className="relative max-w-6xl mx-auto px-6 py-20">
-                <h2 className="text-3xl font-bold text-center mb-16 text-white tracking-wide">Fokus & Tujuan Kami</h2>
+                <h2 className="text-3xl font-bold text-center mb-16 text-white tracking-wide">Our Focus & Objectives</h2>
                 
                 <div className="grid grid-cols-1 md:grid-cols-3 gap-6 pt-8">
                     {[
-                        { num: "1", title: "Riset Keamanan Siber", desc: "Melakukan penelitian mendalam terkait tren keamanan terbaru dan metode analisis forensik digital." },
-                        { num: "2", title: "Study Group & CTF", desc: "Wadah mahasiswa untuk belajar bersama dan mempersiapkan kompetisi siber seperti Capture The Flag." },
-                        { num: "3", title: "Pentest Industri", desc: "Melakukan pengujian penetrasi dan audit keamanan siber bagi sektor privat dan industri." }
+                        { num: "1", title: "Cybersecurity Research", desc: "Conducting in-depth research on the latest security trends and digital forensic analysis methods." },
+                        { num: "2", title: "Study Group & CTF", desc: "A platform for students to learn collaboratively and prepare for cyber competitions like Capture The Flag." },
+                        { num: "3", title: "Industrial Pentesting", desc: "Performing penetration testing and cybersecurity audits for private and industrial sectors." }
                     ].map((item, i) => (
                         <div key={i} className="relative bg-gradient-to-b from-[#1c1c1c] to-[#141414] border border-zinc-800/80 p-8 rounded-3xl text-center flex flex-col items-center hover:border-primary-dark/50 transition-colors shadow-lg">
                             {/* Number Badge Overlap - matching image style */}
@@ -61,14 +61,14 @@ const LandingPage = () => {
 
             {/* Icons Section (Sesuai gambar "Kondisi kamu...") */}
             <section className="relative max-w-5xl mx-auto px-6 py-20 border-t border-zinc-800/50">
-                <h2 className="text-2xl font-bold text-center mb-16 text-white tracking-wide">Pusat Keilmuan Kami Meliputi:</h2>
+                <h2 className="text-2xl font-bold text-center mb-16 text-white tracking-wide">Our Areas of Expertise Include:</h2>
                 
                 <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-4 gap-x-6 gap-y-12">
                     {[
-                        { icon: Search, desc: "Pengembangan Tools Digital Forensics Toolkit" },
-                        { icon: Shield, desc: "Keamanan Infrastruktur dan Analisis Jaringan" },
-                        { icon: Crosshair, desc: "Reverse Engineering dan Analisis Malware" },
-                        { icon: BookOpen, desc: "Perancangan Skenario & Platform CTF" }
+                        { icon: Search, desc: "Digital Forensics Toolkit Development" },
+                        { icon: Shield, desc: "Infrastructure Security and Network Analysis" },
+                        { icon: Crosshair, desc: "Reverse Engineering and Malware Analysis" },
+                        { icon: BookOpen, desc: "CTF Scenario & Platform Design" }
                     ].map((item, i) => (
                         <div key={i} className="flex flex-col items-center text-center">
                             {/* Glowing Red Icon Box */}
@@ -83,14 +83,15 @@ const LandingPage = () => {
 
             {/* Menu Portal (Sesuai gaya angka besar di gambar) */}
             <section className="relative max-w-6xl mx-auto px-6 py-24 mb-10 border-t border-zinc-800/50">
-                <h2 className="text-3xl font-bold text-center mb-16 text-white tracking-wide">Portal Informasi Lab</h2>
+                <h2 className="text-3xl font-bold text-center mb-16 text-white tracking-wide">Laboratory Information Portal</h2>
                 
                 <div className="grid grid-cols-1 md:grid-cols-2 gap-x-12 gap-y-12 max-w-4xl mx-auto">
                     {[
-                        { num: "01.", label: "Tim Struktural", desc: "Kenali pengurus inti dan peneliti utama kami.", path: "/team" },
-                        { num: "02.", label: "Prestasi Mahasiswa", desc: "Riwayat kemenangan di berbagai kompetisi siber.", path: "/prestasi" },
-                        { num: "03.", label: "Penghargaan Lab", desc: "Penghargaan institusi dan publik untuk kontribusi riset.", path: "/awards" },
-                        { num: "04.", label: "Project & Riset", desc: "Publikasi jurnal, paper, dan kolaborasi project.", path: "/projects" }
+                        { num: "01.", label: "Structural Team", desc: "Get to know our core management and principal researchers.", path: "/team" },
+                        { num: "02.", label: "Student Achievements", desc: "History of victories in various cyber competitions.", path: "/prestasi" },
+                        { num: "03.", label: "Laboratory Awards", desc: "Institutional and public awards for research contributions.", path: "/awards" },
+                        { num: "04.", label: "Projects & Research", desc: "Journal publications, papers, and project collaborations.", path: "/projects" }
+
                     ].map((menu, i) => (
                         <Link 
                             key={i} 
