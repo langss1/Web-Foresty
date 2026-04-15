@@ -6,7 +6,10 @@ import maskotImg from '../../assets/Maskot.png';
 
 const LandingPage = () => {
     return (
-        <div className="min-h-screen bg-[#110000] text-gray-200 font-sans selection:bg-primary selection:text-white overflow-x-hidden">
+        <div className="min-h-screen bg-[#110000] text-gray-200 font-sans selection:bg-primary selection:text-white overflow-x-hidden relative">
+            {/* Global Scanline Effect */}
+            <div className="scanline-bar"></div>
+            
             {/* Header/Hero Section */}
             <section className="relative w-full">
                 {/* Global Background Animation for Hero - RESTORED BOLD LOOK */}
@@ -100,23 +103,45 @@ const LandingPage = () => {
             </section>
 
             {/* Apa yang termasuk (What We Do / Goals) */}
-            <section className="relative max-w-6xl mx-auto px-6 py-20">
-                <h2 className="text-3xl font-bold text-center mb-16 text-white tracking-wide">Our Focus & Objectives</h2>
-                
-                <div className="grid grid-cols-1 md:grid-cols-3 gap-6 pt-8 text-center items-center">
-                    {[
-                        { num: "1", title: "Cybersecurity Research", desc: "Conducting in-depth research on the latest security trends and digital forensic analysis methods." },
-                        { num: "2", title: "Study Group & CTF", desc: "A platform for students to learn collaboratively and prepare for cyber competitions like Capture The Flag." },
-                        { num: "3", title: "Industrial Pentesting", desc: "Performing penetration testing and cybersecurity audits for private and industrial sectors." }
-                    ].map((item, i) => (
-                        <div key={i} className="relative bg-gradient-to-b from-[#280506] to-[#140001] border border-primary-dark/30 p-8 rounded-3xl text-center flex flex-col items-center hover:border-primary-dark transition-colors shadow-xl">
-                            <div className="absolute -top-6 left-1/2 -translate-x-1/2 w-14 h-14 rounded-full bg-gradient-to-br from-primary to-[#780105] text-white font-semibold flex items-center justify-center text-xl shadow-[0_4px_15px_rgba(237,27,36,0.6)]">
-                                {item.num}
+            <section className="relative w-full py-24 bg-grid-red border-t border-primary-dark/10">
+                <div className="max-w-6xl mx-auto px-6">
+                    <div className="flex items-center gap-4 mb-16 justify-center">
+                        <div className="h-[1px] w-12 bg-primary/30"></div>
+                        <h2 className="text-3xl font-bold text-white tracking-widest font-cyber uppercase">
+                            <span className="text-primary opacity-70">SEC_</span>FOCUS_OBJECTIVES
+                        </h2>
+                        <div className="h-[1px] w-12 bg-primary/30"></div>
+                    </div>
+                    
+                    <div className="grid grid-cols-1 md:grid-cols-3 gap-8">
+                        {[
+                            { num: "01", title: "Cybersecurity Research", desc: "Conducting in-depth research on the latest security trends and digital forensic analysis methods." },
+                            { num: "02", title: "Study Group & CTF", desc: "A platform for students to learn collaboratively and prepare for cyber competitions like Capture The Flag." },
+                            { num: "03", title: "Industrial Pentesting", desc: "Performing penetration testing and cybersecurity audits for private and industrial sectors." }
+                        ].map((item, i) => (
+                            <div key={i} className="relative bg-[#0d0000] border border-primary-dark/20 p-10 rounded-lg group hover:border-primary/40 transition-all duration-500 overflow-hidden">
+                                {/* Cyber Decor */}
+                                <div className="absolute top-0 right-0 w-16 h-16 bg-gradient-to-br from-primary/10 to-transparent opacity-0 group-hover:opacity-100 transition-opacity"></div>
+                                
+                                {/* Terminal Style Number */}
+                                <div className="inline-block mb-8 px-3 py-1 bg-[#1a0000] border border-primary/30 text-primary font-mono text-xs tracking-tighter shadow-[0_0_15px_rgba(237,27,36,0.1)]">
+                                    [ REF_ID_{item.num} ]
+                                </div>
+                                
+                                <h3 className="text-xl font-bold mb-4 text-white group-hover:text-primary transition-colors duration-300 font-cyber flex items-center gap-3">
+                                    <span className="text-primary text-sm font-mono mt-1 opacity-60">>&nbsp;</span>
+                                    {item.title}
+                                </h3>
+                                <p className="text-gray-400 text-sm leading-relaxed font-sans">{item.desc}</p>
+                                
+                                {/* Bottom Corner Decor */}
+                                <div className="absolute bottom-2 right-2 flex gap-1 items-center opacity-30 group-hover:opacity-100 transition-opacity">
+                                    <div className="w-1 h-1 bg-primary rounded-full animate-pulse"></div>
+                                    <span className="text-[10px] font-mono text-gray-500">CONNECTED</span>
+                                </div>
                             </div>
-                            <h3 className="text-lg font-bold mt-8 mb-4 text-white">{item.title}</h3>
-                            <p className="text-red-100/70 text-sm leading-relaxed">{item.desc}</p>
-                        </div>
-                    ))}
+                        ))}
+                    </div>
                 </div>
             </section>
 
@@ -142,34 +167,50 @@ const LandingPage = () => {
             </section>
 
             {/* Menu Portal (Sesuai gaya angka besar di gambar) */}
-            <section className="relative max-w-6xl mx-auto px-6 pt-24 pb-16 border-t border-primary-dark/20 bg-gradient-to-b from-[#150000] to-transparent">
-                <h2 className="text-3xl font-bold text-center mb-16 text-white tracking-wide">Laboratory Information Portal</h2>
-                
-                <div className="grid grid-cols-1 md:grid-cols-2 gap-x-12 gap-y-12 max-w-4xl mx-auto">
-                    {[
-                        { num: "01.", label: "Structural Team", desc: "Get to know our core management and principal researchers.", path: "/team" },
-                        { num: "02.", label: "Student Achievements", desc: "History of victories in various cyber competitions.", path: "/prestasi" },
-                        { num: "03.", label: "Laboratory Awards", desc: "Institutional and public awards for research contributions.", path: "/awards" },
-                        { num: "04.", label: "Projects & Research", desc: "Journal publications, papers, and project collaborations.", path: "/projects" }
-                    ].map((menu, i) => (
-                        <Link 
-                            key={i} 
-                            to={menu.path} 
-                            className="group flex gap-6 items-start p-4 transition-all hover:translate-x-2 rounded-2xl hover:bg-[#300505]/50 border border-transparent hover:border-primary-dark/30"
-                        >
-                            <span className="text-5xl font-light text-primary group-hover:text-red-400 transition-colors font-serif drop-shadow-[0_2px_10px_rgba(237,27,36,0.3)]">
-                                {menu.num}
-                            </span>
-                            <div className="flex flex-col mt-2">
-                                <span className="text-lg font-semibold text-white mb-2">
-                                    {menu.label}
-                                </span>
-                                <span className="text-sm text-red-100/60">
-                                    {menu.desc}
-                                </span>
-                            </div>
-                        </Link>
-                    ))}
+            <section className="relative w-full py-24 border-t border-primary-dark/20 bg-grid-red">
+                <div className="max-w-6xl mx-auto px-6">
+                    <div className="flex items-center gap-4 mb-20 justify-center">
+                        <div className="h-[1px] w-12 bg-primary/30"></div>
+                        <h2 className="text-3xl font-bold text-white tracking-widest font-cyber uppercase">
+                            <span className="text-primary opacity-70">SYS_</span>ACCESS_PORTAL
+                        </h2>
+                        <div className="h-[1px] w-12 bg-primary/30"></div>
+                    </div>
+                    
+                    <div className="grid grid-cols-1 md:grid-cols-2 gap-x-12 gap-y-12 max-w-4xl mx-auto">
+                        {[
+                            { num: "01", label: "Structural Team", desc: "Get to know our core management and principal researchers.", path: "/team" },
+                            { num: "02", label: "Student Achievements", desc: "History of victories in various cyber competitions.", path: "/prestasi" },
+                            { num: "03", label: "Laboratory Awards", desc: "Institutional and public awards for research contributions.", path: "/awards" },
+                            { num: "04", label: "Projects & Research", desc: "Journal publications, papers, and project collaborations.", path: "/projects" }
+                        ].map((menu, i) => (
+                            <Link 
+                                key={i} 
+                                to={menu.path} 
+                                className="group flex gap-8 items-start p-8 transition-all relative overflow-hidden rounded-lg bg-[#0a0000] border border-primary-dark/10 hover:border-primary/40 hover:bg-[#150000]/60"
+                            >
+                                {/* Background Accent */}
+                                <div className="absolute top-0 right-0 px-2 py-0.5 bg-primary/10 font-mono text-[8px] text-primary/40 opacity-0 group-hover:opacity-100 transition-opacity">
+                                    AUTH_REQUIRED
+                                </div>
+
+                                <div className="flex flex-col items-center">
+                                    <span className="text-6xl font-mono text-primary group-hover:text-cyber-red transition-all duration-500 font-bold opacity-30 group-hover:opacity-100 tracking-tighter">
+                                        {menu.num}
+                                    </span>
+                                    <div className="w-full h-[1px] bg-primary/20 group-hover:bg-primary/50 transition-colors mt-2"></div>
+                                </div>
+                                <div className="flex flex-col mt-2">
+                                    <span className="text-xl font-bold text-white mb-2 font-cyber tracking-tight group-hover:text-primary transition-colors">
+                                        <span className="text-primary font-mono text-sm mr-2">{">"}</span>{menu.label}
+                                    </span>
+                                    <span className="text-sm text-gray-400 group-hover:text-gray-300 transition-colors leading-relaxed">
+                                        {menu.desc}
+                                    </span>
+                                </div>
+                            </Link>
+                        ))}
+                    </div>
                 </div>
             </section>
         </div>
