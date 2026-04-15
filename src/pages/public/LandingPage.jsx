@@ -2,6 +2,7 @@ import React from 'react';
 import { Link } from 'react-router-dom';
 import { Database, GraduationCap, Award, Shield, Search, Crosshair, Users, BookOpen, Key } from 'lucide-react';
 import { motion } from 'framer-motion';
+import maskotImg from '../../assets/Maskot.png';
 
 const LandingPage = () => {
     return (
@@ -61,8 +62,8 @@ const LandingPage = () => {
                     </motion.div>
                 </div>
 
-                <div className="relative max-w-6xl mx-auto px-6 pt-40 pb-32 z-10">
-                    <div className="max-w-2xl space-y-6">
+                <div className="relative max-w-6xl mx-auto px-6 pt-40 pb-32 z-10 grid lg:grid-cols-2 gap-10 items-center">
+                    <div className="max-w-xl space-y-6">
                         <p className="text-primary-dark text-sm tracking-widest uppercase mb-2 font-bold drop-shadow-md">Research Laboratory</p>
                         <h1 className="text-6xl md:text-7xl lg:text-8xl font-bold leading-tight text-white mb-4 drop-shadow-2xl">
                             FORESTY <br />
@@ -78,6 +79,15 @@ const LandingPage = () => {
                                 Join Us
                             </Link>
                         </div>
+                    </div>
+
+                    <div className="hidden lg:flex justify-end items-center relative z-20">
+                        <motion.div
+                            animate={{ y: [-15, 15, -15] }}
+                            transition={{ duration: 5, repeat: Infinity, ease: "easeInOut" }}
+                        >
+                            <img src={maskotImg} alt="Foresty Lab Mascot" className="w-[480px] h-auto object-contain drop-shadow-[0_0_35px_rgba(237,27,36,0.6)]" />
+                        </motion.div>
                     </div>
                 </div>
             </section>
