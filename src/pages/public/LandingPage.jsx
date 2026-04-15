@@ -81,12 +81,19 @@ const LandingPage = () => {
                         </div>
                     </div>
 
-                    <div className="hidden lg:flex justify-end items-center relative z-20">
+                    <div className="flex justify-center lg:justify-end items-center relative z-20 mt-12 lg:mt-0">
                         <motion.div
                             animate={{ y: [-15, 15, -15] }}
                             transition={{ duration: 5, repeat: Infinity, ease: "easeInOut" }}
+                            className="relative"
                         >
-                            <img src={maskotImg} alt="Foresty Lab Mascot" className="w-[480px] h-auto object-contain drop-shadow-[0_0_35px_rgba(237,27,36,0.6)]" />
+                            {/* Glow Effect behind mascot */}
+                            <div className="absolute inset-0 bg-primary/20 blur-[80px] rounded-full -z-10"></div>
+                            <img 
+                                src={maskotImg} 
+                                alt="Foresty Lab Mascot" 
+                                className="w-[300px] md:w-[400px] lg:w-[480px] h-auto object-contain drop-shadow-[0_0_35px_rgba(237,27,36,0.5)]" 
+                            />
                         </motion.div>
                     </div>
                 </div>
