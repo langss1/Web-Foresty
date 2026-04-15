@@ -90,7 +90,7 @@ const LandingPage = () => {
                             {/* Glow Effect behind mascot */}
                             <div className="absolute w-[100%] h-[100%] bg-primary/20 blur-[100px] rounded-full -z-10 animate-pulse"></div>
                             <img 
-                                src="/Maskot.png" 
+                                src={maskotImg} 
                                 alt="Foresty Lab Mascot" 
                                 className="w-[280px] md:w-[380px] lg:w-[420px] h-auto object-contain relative z-30 drop-shadow-[0_0_40px_rgba(237,27,36,0.4)]"
                             />
