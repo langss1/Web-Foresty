@@ -8,8 +8,8 @@ export default {
     extend: {
       colors: {
         primary: {
-          DEFAULT: "#E11D48", // Foresty Red
-          dark: "#9F1239",
+          DEFAULT: "#ed1b24", // Foresty Red (muda)
+          dark: "#b22930",    // Foresty Red (tua)
         },
         cyber: {
           black: "#0A0A0A",
