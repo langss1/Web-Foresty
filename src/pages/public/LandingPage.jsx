@@ -7,89 +7,77 @@ const LandingPage = () => {
     return (
         <div className="min-h-screen bg-[#110000] text-gray-200 font-sans selection:bg-primary selection:text-white">
             {/* Header/Hero Section */}
-            <section className="relative w-full max-w-6xl mx-auto px-6 pt-32 pb-24 grid lg:grid-cols-2 gap-10 items-center">
-                {/* Subtle Red Gradients in Background */}
-                <div className="absolute top-0 right-0 w-[600px] h-[600px] bg-primary-dark/30 blur-[180px] rounded-full pointer-events-none"></div>
-                <div className="absolute bottom-10 left-10 w-[500px] h-[500px] bg-[#3d0306] blur-[150px] rounded-full pointer-events-none"></div>
-                
-                <div className="relative z-10 space-y-6">
-                    <p className="text-primary-dark text-sm tracking-widest uppercase mb-2 font-bold">Research Laboratory</p>
-                    <h1 className="text-5xl md:text-6xl lg:text-7xl font-bold leading-tight text-white mb-4">
-                        FORESTY <br />
-                        <span className="text-transparent bg-clip-text bg-gradient-to-r from-red-100 to-primary-dark">LAB.</span>
-                    </h1>
-                    
-                    <p className="text-gray-300 max-w-md mt-6 text-base leading-relaxed">
-                        The center of excellence for cybersecurity and digital forensics technology development from the Faculty of Informatics.
-                    </p>
-                    
-                    <div className="pt-8">
-                        <Link to="/team" className="inline-block bg-gradient-to-r from-primary to-primary-dark hover:from-primary-dark hover:to-primary transition-all duration-300 text-white font-medium py-3 px-10 rounded-full shadow-[0_4px_20px_rgba(237,27,36,0.5)] hover:shadow-lg hover:-translate-y-0.5">
-                            Join Us
-                        </Link>
-                    </div>
-                </div>
-                
-                <div className="relative z-10 hidden lg:flex justify-end items-center">
-                    <div className="relative w-[380px] h-[480px] rounded-[2rem] overflow-hidden bg-gradient-to-b from-[#2e0505] to-[#120000] border border-primary-dark/30 shadow-2xl flex items-center justify-center p-8">
-                        <div className="absolute inset-0 bg-[radial-gradient(ellipse_at_top_right,_var(--tw-gradient-stops))] from-primary/20 via-transparent to-transparent"></div>
-                        
-                        {/* Central Animated Shield */}
-                        <motion.div
-                            animate={{ scale: [1, 1.05, 1], rotate: [0, 2, -2, 0] }}
-                            transition={{ duration: 4, repeat: Infinity, ease: "easeInOut" }}
-                            className="relative z-10"
-                        >
-                            <Shield className="w-48 h-48 text-primary-dark/90" strokeWidth={0.5} />
-                            <motion.div 
-                                animate={{ opacity: [0.3, 0.7, 0.3], scale: [1, 1.2, 1] }}
-                                transition={{ duration: 3, repeat: Infinity }}
-                                className="absolute inset-0 bg-primary/30 blur-2xl rounded-full"
-                            />
-                        </motion.div>
+            <section className="relative w-full overflow-hidden">
+                {/* Global Background Animation for Hero */}
+                <div className="absolute inset-0 flex items-center justify-center pointer-events-none opacity-20 md:opacity-30">
+                    <motion.div
+                        animate={{ scale: [1, 1.05, 1], rotate: [0, 2, -2, 0] }}
+                        transition={{ duration: 6, repeat: Infinity, ease: "easeInOut" }}
+                        className="absolute z-0"
+                    >
+                        <Shield className="w-[400px] h-[400px] md:w-[600px] md:h-[600px] text-primary-dark/50" strokeWidth={0.5} />
+                    </motion.div>
 
-                        {/* Orbiting Cyber Elements */}
-                        <motion.div
-                            animate={{ rotate: 360 }}
-                            transition={{ duration: 25, repeat: Infinity, ease: "linear" }}
-                            className="absolute w-[450px] h-[450px] flex items-center justify-center pointer-events-none"
+                    <motion.div
+                        animate={{ rotate: 360 }}
+                        transition={{ duration: 40, repeat: Infinity, ease: "linear" }}
+                        className="absolute w-[600px] h-[600px] md:w-[900px] md:h-[900px] flex items-center justify-center pointer-events-none"
+                    >
+                        {/* Key Icon - representing encryption */}
+                        <motion.div 
+                            className="absolute top-[5%] left-[20%] text-primary/70"
+                            animate={{ rotate: -360 }} 
+                            transition={{ duration: 40, repeat: Infinity, ease: "linear" }}
                         >
-                            {/* Key Icon - representing encryption */}
-                            <motion.div 
-                                className="absolute top-[10%] left-[25%] text-red-300/60"
-                                animate={{ rotate: -360 }} 
-                                transition={{ duration: 25, repeat: Infinity, ease: "linear" }}
-                            >
-                                <Key className="w-10 h-10" />
-                            </motion.div>
-                            
-                            {/* Crosshair Icon - representing pentest/targeting */}
-                            <motion.div 
-                                className="absolute bottom-[20%] right-[15%] text-red-300/80"
-                                animate={{ rotate: -360 }} 
-                                transition={{ duration: 25, repeat: Infinity, ease: "linear" }}
-                            >
-                                <Crosshair className="w-12 h-12" />
-                            </motion.div>
-                            
-                            {/* Search Icon - representing forensics/analysis */}
-                            <motion.div 
-                                className="absolute top-[40%] right-[5%] text-red-300/50"
-                                animate={{ rotate: -360 }} 
-                                transition={{ duration: 25, repeat: Infinity, ease: "linear" }}
-                            >
-                                <Search className="w-8 h-8" />
-                            </motion.div>
-                            
-                            {/* Database Icon - representing data security */}
-                            <motion.div 
-                                className="absolute bottom-[10%] left-[10%] text-red-300/40"
-                                animate={{ rotate: -360 }} 
-                                transition={{ duration: 25, repeat: Infinity, ease: "linear" }}
-                            >
-                                <Database className="w-9 h-9" />
-                            </motion.div>
+                            <Key className="w-16 h-16 md:w-24 md:h-24" />
                         </motion.div>
+                        
+                        {/* Crosshair Icon - representing pentest/targeting */}
+                        <motion.div 
+                            className="absolute bottom-[15%] right-[10%] text-primary/80"
+                            animate={{ rotate: -360 }} 
+                            transition={{ duration: 40, repeat: Infinity, ease: "linear" }}
+                        >
+                            <Crosshair className="w-20 h-20 md:w-32 md:h-32" />
+                        </motion.div>
+                        
+                        {/* Search Icon - representing forensics/analysis */}
+                        <motion.div 
+                            className="absolute top-[30%] right-[3%] text-primary/50"
+                            animate={{ rotate: -360 }} 
+                            transition={{ duration: 40, repeat: Infinity, ease: "linear" }}
+                        >
+                            <Search className="w-14 h-14 md:w-20 md:h-20" />
+                        </motion.div>
+                        
+                        {/* Database Icon - representing data security */}
+                        <motion.div 
+                            className="absolute bottom-[20%] left-[8%] text-primary-dark/60"
+                            animate={{ rotate: -360 }} 
+                            transition={{ duration: 40, repeat: Infinity, ease: "linear" }}
+                        >
+                            <Database className="w-16 h-16 md:w-24 md:h-24" />
+                        </motion.div>
+                    </motion.div>
+                </div>
+
+                <div className="relative max-w-6xl mx-auto px-6 pt-40 pb-32 z-10">
+                    <div className="max-w-2xl space-y-6">
+                        <p className="text-primary-dark text-sm tracking-widest uppercase mb-2 font-bold drop-shadow-md">Research Laboratory</p>
+                        <h1 className="text-6xl md:text-7xl lg:text-8xl font-bold leading-tight text-white mb-4 drop-shadow-2xl">
+                            FORESTY <br />
+                            <span className="text-transparent bg-clip-text bg-gradient-to-r from-red-200 to-primary">LAB.</span>
+                        </h1>
+                        
+                        <p className="text-gray-200 max-w-xl mt-6 text-lg md:text-xl leading-relaxed drop-shadow-md">
+                            The center of excellence for cybersecurity and digital forensics technology development from the Faculty of Informatics.
+                        </p>
+                        
+                        <div className="pt-8">
+                            <Link to="/team" className="inline-block bg-gradient-to-r from-primary to-primary-dark hover:from-primary-dark hover:to-primary transition-all duration-300 text-white font-semibold py-4 px-12 rounded-full shadow-[0_4px_30px_rgba(237,27,36,0.5)] hover:shadow-[0_4px_35px_rgba(237,27,36,0.8)] hover:-translate-y-1">
+                                Join Us
+                            </Link>
+                        </div>
                     </div>
                 </div>
             </section>

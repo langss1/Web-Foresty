@@ -17,8 +17,12 @@ const Navbar = () => {
     return (
         <nav className="fixed top-0 left-0 right-0 z-50 bg-[#110000]/80 backdrop-blur-md border-b border-primary-dark/30 h-16 flex items-center px-10">
             <div className="flex items-center justify-between w-full max-w-7xl mx-auto">
-                <Link to="/" className="font-bold text-xl uppercase italic text-white flex items-center gap-2">
-                    <span className="text-primary-dark">FORESTY</span> LAB
+                <Link to="/" className="font-bold text-xl uppercase italic text-white flex items-center gap-3">
+                    <img src={logoImg} alt="Foresty Lab Logo" className="h-9 w-auto object-contain" />
+                    <div className="flex gap-1.5">
+                        <span className="text-primary-dark">FORESTY</span> 
+                        <span>LAB</span>
+                    </div>
                 </Link>
 
                 <div className="flex items-center gap-6">
