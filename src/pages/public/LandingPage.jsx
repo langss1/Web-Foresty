@@ -8,39 +8,74 @@ const LandingPage = () => {
     return (
         <div className="min-h-screen bg-[#110000] text-gray-200 font-sans selection:bg-primary selection:text-white">
             {/* Header/Hero Section */}
-            <section className="relative w-full overflow-hidden min-h-[90vh] flex items-center">
-                {/* Global Background Animation - Scaled down and moved to edges as watermarks */}
-                <div className="absolute inset-0 pointer-events-none opacity-5 md:opacity-10">
+            <section className="relative w-full overflow-hidden">
+                {/* Global Background Animation for Hero - RESTORED BOLD LOOK */}
+                <div className="absolute inset-0 flex items-center justify-center pointer-events-none opacity-20 md:opacity-30">
                     <motion.div
-                        animate={{ scale: [1, 1.05, 1], rotate: [0, 3, -3, 0] }}
-                        transition={{ duration: 15, repeat: Infinity, ease: "easeInOut" }}
-                        className="absolute -right-10 -top-10 opacity-30"
+                        animate={{ scale: [1, 1.05, 1], rotate: [0, 2, -2, 0] }}
+                        transition={{ duration: 6, repeat: Infinity, ease: "easeInOut" }}
+                        className="absolute z-0"
                     >
-                        <Shield className="w-[300px] h-[300px] md:w-[500px] md:h-[500px] text-primary-dark" strokeWidth={0.1} />
+                        <Shield className="w-[400px] h-[400px] md:w-[600px] md:h-[600px] text-primary-dark/50" strokeWidth={0.5} />
                     </motion.div>
 
-                    <div className="absolute inset-0 overflow-hidden">
-                        <Key className="absolute top-[15%] left-[2%] w-12 h-12 text-primary/20 -rotate-12" />
-                        <Database className="absolute bottom-[20%] left-[5%] w-16 h-16 text-primary-dark/10 rotate-12" />
-                        <Search className="absolute top-[8%] right-[10%] w-10 h-10 text-primary/10" />
-                        <Crosshair className="absolute bottom-[10%] right-[20%] w-20 h-20 text-primary/30" />
-                    </div>
+                    <motion.div
+                        animate={{ rotate: 360 }}
+                        transition={{ duration: 40, repeat: Infinity, ease: "linear" }}
+                        className="absolute w-[600px] h-[600px] md:w-[900px] md:h-[900px] flex items-center justify-center pointer-events-none"
+                    >
+                        {/* Key Icon - representing encryption */}
+                        <motion.div 
+                            className="absolute top-[5%] left-[20%] text-primary/70"
+                            animate={{ rotate: -360 }} 
+                            transition={{ duration: 40, repeat: Infinity, ease: "linear" }}
+                        >
+                            <Key className="w-16 h-16 md:w-24 md:h-24" />
+                        </motion.div>
+                        
+                        {/* Crosshair Icon - representing pentest/targeting */}
+                        <motion.div 
+                            className="absolute bottom-[15%] right-[10%] text-primary/80"
+                            animate={{ rotate: -360 }} 
+                            transition={{ duration: 40, repeat: Infinity, ease: "linear" }}
+                        >
+                            <Crosshair className="w-20 h-20 md:w-32 md:h-32" />
+                        </motion.div>
+                        
+                        {/* Search Icon - representing forensics/analysis */}
+                        <motion.div 
+                            className="absolute top-[30%] right-[3%] text-primary/50"
+                            animate={{ rotate: -360 }} 
+                            transition={{ duration: 40, repeat: Infinity, ease: "linear" }}
+                        >
+                            <Search className="w-14 h-14 md:w-20 md:h-20" />
+                        </motion.div>
+                        
+                        {/* Database Icon - representing data security */}
+                        <motion.div 
+                            className="absolute bottom-[20%] left-[8%] text-primary-dark/60"
+                            animate={{ rotate: -360 }} 
+                            transition={{ duration: 40, repeat: Infinity, ease: "linear" }}
+                        >
+                            <Database className="w-16 h-16 md:w-24 md:h-24" />
+                        </motion.div>
+                    </motion.div>
                 </div>
 
-                <div className="relative max-w-6xl mx-auto px-6 pt-32 pb-32 z-10 grid lg:grid-cols-2 gap-10 items-center w-full">
-                    <div className="space-y-6">
-                        <p className="text-primary-dark text-sm tracking-widest uppercase mb-2 font-bold opacity-80">Research Laboratory</p>
-                        <h1 className="text-6xl md:text-7xl lg:text-8xl font-bold leading-[1.05] text-white mb-4">
+                <div className="relative max-w-6xl mx-auto px-6 pt-40 pb-32 z-10 grid lg:grid-cols-2 gap-10 items-center">
+                    <div className="max-w-xl space-y-6">
+                        <p className="text-primary-dark text-sm tracking-widest uppercase mb-2 font-bold drop-shadow-md">Research Laboratory</p>
+                        <h1 className="text-6xl md:text-7xl lg:text-8xl font-bold leading-tight text-white mb-4 drop-shadow-2xl">
                             FORESTY <br />
                             <span className="text-transparent bg-clip-text bg-gradient-to-r from-red-200 to-primary">LAB.</span>
                         </h1>
                         
-                        <p className="text-gray-300 max-w-lg mt-6 text-lg md:text-xl leading-relaxed">
+                        <p className="text-gray-200 max-w-xl mt-6 text-lg md:text-xl leading-relaxed drop-shadow-md">
                             The center of excellence for cybersecurity and digital forensics technology development from the Faculty of Informatics.
                         </p>
                         
                         <div className="pt-8">
-                            <Link to="/team" className="inline-block bg-gradient-to-r from-primary to-primary-dark hover:from-primary-dark hover:to-primary transition-all duration-300 text-white font-semibold py-4 px-12 rounded-full shadow-[0_4px_30px_rgba(237,27,36,0.3)] hover:shadow-[0_4px_35px_rgba(237,27,36,0.5)] hover:-translate-y-1">
+                            <Link to="/team" className="inline-block bg-gradient-to-r from-primary to-primary-dark hover:from-primary-dark hover:to-primary transition-all duration-300 text-white font-semibold py-4 px-12 rounded-full shadow-[0_4px_30px_rgba(237,27,36,0.5)] hover:shadow-[0_4px_35px_rgba(237,27,36,0.8)] hover:-translate-y-1">
                                 Join Us
                             </Link>
                         </div>
@@ -48,12 +83,12 @@ const LandingPage = () => {
 
                     <div className="flex justify-center lg:justify-end items-center relative z-20">
                         <motion.div
-                            animate={{ y: [-12, 12, -12] }}
-                            transition={{ duration: 6, repeat: Infinity, ease: "easeInOut" }}
+                            animate={{ y: [-15, 15, -15] }}
+                            transition={{ duration: 5, repeat: Infinity, ease: "easeInOut" }}
                             className="relative flex items-center justify-center p-4"
                         >
                             {/* Glow Effect behind mascot */}
-                            <div className="absolute w-[100%] h-[100%] bg-primary/20 blur-[90px] rounded-full -z-10 animate-pulse"></div>
+                            <div className="absolute w-[100%] h-[100%] bg-primary/20 blur-[100px] rounded-full -z-10 animate-pulse"></div>
                             <img 
                                 src="/Maskot.png" 
                                 alt="Foresty Lab Mascot" 
