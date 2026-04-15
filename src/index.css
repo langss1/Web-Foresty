@@ -8,12 +8,12 @@
 
 @layer base {
   :root {
-    background-color: #ffffff;
-    color: #0c0c0c;
+    background-color: #110000;
+    color: #e5e5e5;
   }
 
   body {
-    @apply antialiased font-sans bg-white text-zinc-900;
+    @apply antialiased font-sans bg-[#110000] text-gray-200;
   }
 }
 

@@ -6,9 +6,9 @@ import maskotImg from '../../assets/Maskot.png';
 
 const LandingPage = () => {
     return (
-        <div className="min-h-screen bg-[#110000] text-gray-200 font-sans selection:bg-primary selection:text-white">
+        <div className="min-h-screen bg-[#110000] text-gray-200 font-sans selection:bg-primary selection:text-white overflow-x-hidden">
             {/* Header/Hero Section */}
-            <section className="relative w-full overflow-hidden">
+            <section className="relative w-full">
                 {/* Global Background Animation for Hero - RESTORED BOLD LOOK */}
                 <div className="absolute inset-0 flex items-center justify-center pointer-events-none opacity-20 md:opacity-30">
                     <motion.div
