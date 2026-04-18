@@ -129,7 +129,7 @@ const LandingPage = () => {
                                 </div>
                                 
                                 <h3 className="text-xl font-bold mb-4 text-white group-hover:text-primary transition-colors duration-300 font-cyber flex items-center gap-3">
-                                    <span className="text-primary text-sm font-mono mt-1 opacity-60">>&nbsp;</span>
+                                    <span className="text-primary text-sm font-mono mt-1 opacity-60">&gt;&nbsp;</span>
                                     {item.title}
                                 </h3>
                                 <p className="text-gray-400 text-sm leading-relaxed font-sans">{item.desc}</p>
