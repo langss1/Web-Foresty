@@ -8,12 +8,12 @@
 
 @layer base {
   :root {
-    background-color: #ffffff;
-    color: #0c0c0c;
+    background-color: #110000;
+    color: #e5e5e5;
   }
 
   body {
-    @apply antialiased font-sans bg-white text-zinc-900;
+    @apply antialiased font-sans bg-[#110000] text-gray-200;
   }
 }
 
@@ -21,6 +21,41 @@
   .glass {
     @apply bg-black/60 backdrop-blur-xl border border-red-900/30;
   }
+  
+  .bg-grid-red {
+    background-size: 50px 50px;
+    background-image: 
+      linear-gradient(to right, rgba(237, 27, 36, 0.03) 1px, transparent 1px),
+      linear-gradient(to bottom, rgba(237, 27, 36, 0.03) 1px, transparent 1px);
+  }
+
+  .text-glitch {
+    text-shadow: 0.05em 0 0 rgba(237, 27, 36, 0.75),
+                -0.025em -0.05em 0 rgba(0, 255, 255, 0.75),
+                0.025em 0.05em 0 rgba(237, 27, 36, 0.75);
+    animation: glitch 500ms infinite;
+  }
+
+  .bg-scanline {
+    background: linear-gradient(
+        to bottom,
+        transparent 50%,
+        rgba(237, 27, 36, 0.04) 50%
+    );
+    background-size: 100% 4px;
+    animation: scanline 10s linear infinite;
+  }
+}
+
+@keyframes scanline-bar {
+  0% { transform: translateY(-100%); }
+  100% { transform: translateY(100vh); }
+}
+
+.scanline-bar {
+  @apply fixed inset-0 w-full h-24 pointer-events-none z-[60];
+  background: linear-gradient(to bottom, transparent, rgba(237, 27, 36, 0.05), transparent);
+  animation: scanline-bar 6s linear infinite;
 }
 
 /* Base body styles */
