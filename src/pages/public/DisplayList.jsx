@@ -1,296 +1,286 @@
 import { useEffect, useState } from 'react';
 import { supabase } from '../../lib/supabase';
 import { motion, AnimatePresence } from 'framer-motion';
-import { Database, Search, Award, Briefcase, ExternalLink, Terminal, ShieldAlert } from 'lucide-react';
+import { Award, Briefcase, Search, ExternalLink, Calendar, Users, ShieldAlert, Trophy, BookOpen } from 'lucide-react';
 
-const getDirectDriveLink = (url) => {
-    if (!url) return '';
-    if (url.includes('drive.google.com')) {
-        const idMatch = url.match(/\/d\/([a-zA-Z0-9_-]{25,})/) || 
-                       url.match(/id=([a-zA-Z0-9_-]{25,})/) ||
-                       url.match(/\/file\/d\/([a-zA-Z0-9_-]{25,})/);
-        if (idMatch && idMatch[1]) {
-            return `https://lh3.googleusercontent.com/d/${idMatch[1]}=s1000`;
-        }
-    }
-    return url;
+const toDrive = (url) => {
+  if (!url) return null;
+  const m = url.match(/\/d\/([a-zA-Z0-9_-]{25,})/) || url.match(/id=([a-zA-Z0-9_-]{25,})/);
+  return m?.[1] ? `https://lh3.googleusercontent.com/d/${m[1]}=s800` : url;
 };
 
-const containerVariants = {
-    hidden: { opacity: 0 },
-    show: {
-        opacity: 1,
-        transition: { staggerChildren: 0.1 }
-    }
+const MOCK = (table) => [
+  {
+    id: 'mk1',
+    title: table==='prestasi' ? 'Juara 1 Cyber Defense Competition 2024' : table==='awards' ? 'Best Research Lab Award 2024' : 'Advanced Cryptography Engine',
+    description: 'Kompetisi keamanan siber tingkat internasional yang diikuti oleh lebih dari 500 tim dari 30 negara. Tim Foresty berhasil merebut posisi teratas.',
+    members: 'Muhammad Faris, Gilang Ramadhan, Rizky Pratama',
+    category: 'INTERNATIONAL',
+    created_at: new Date().toISOString(),
+    photo_url: null,
+  },
+  {
+    id: 'mk2',
+    title: table==='prestasi' ? 'Medali Emas Hackathon Nasional 2024' : table==='awards' ? 'Innovation Excellence Award' : 'Zero-Day Vulnerability Scanner',
+    description: 'Hackathon berskala nasional dengan tema keamanan infrastruktur digital. Tim mengembangkan solusi deteksi ancaman berbasis AI.',
+    members: 'Andi Kurniawan, Budi Santoso',
+    category: 'NATIONAL',
+    created_at: new Date(Date.now()-86400000*30).toISOString(),
+    photo_url: null,
+  },
+  {
+    id: 'mk3',
+    title: table==='prestasi' ? 'Top 10 CTF Asia-Pacific 2023' : table==='awards' ? 'Best Student Lab Award' : 'OSINT Intelligence Framework',
+    description: 'Kompetisi CTF regional Asia-Pasifik yang mempertemukan tim-tim terbaik dari seluruh kawasan. Foresty Lab masuk 10 besar.',
+    members: 'Dina Aulia, Reza Hakim, Citra Dewi',
+    category: 'REGIONAL',
+    created_at: new Date(Date.now()-86400000*60).toISOString(),
+    photo_url: null,
+  },
+];
+
+const CFG = {
+  prestasi: { Icon: Trophy,    label: 'Prestasi',       color: '#f59e0b', glow: 'rgba(245,158,11,.08)', border: 'rgba(245,158,11,.22)', heroGlow: '#f59e0b', desc: 'Rekam jejak kemenangan kompetisi keamanan siber tim Foresty Lab.' },
+  projects:  { Icon: BookOpen,  label: 'Proyek & Riset', color: '#3b82f6', glow: 'rgba(59,130,246,.08)',  border: 'rgba(59,130,246,.22)',  heroGlow: '#3b82f6', desc: 'Publikasi ilmiah, tools riset, dan kolaborasi proyek unggulan.' },
+  awards:    { Icon: Award,     label: 'Penghargaan',    color: '#E8192C', glow: 'rgba(232,25,44,.08)',   border: 'rgba(232,25,44,.22)',   heroGlow: '#E8192C', desc: 'Pengakuan institusional atas kontribusi dan inovasi laboratorium.' },
 };
 
-const itemVariants = {
-    hidden: { opacity: 0, y: 20 },
-    show: { opacity: 1, y: 0, transition: { type: "spring", stiffness: 300, damping: 24 } }
+const CAT_CFG = {
+  INTERNATIONAL: { bg:'rgba(245,158,11,.12)', border:'rgba(245,158,11,.32)', text:'#f59e0b', icon:'🌐' },
+  NATIONAL:      { bg:'rgba(59,130,246,.12)',  border:'rgba(59,130,246,.32)',  text:'#60a5fa', icon:'🇮🇩' },
+  REGIONAL:      { bg:'rgba(16,185,129,.12)',  border:'rgba(16,185,129,.32)',  text:'#34d399', icon:'📍' },
 };
+const getCat = (c) => CAT_CFG[c] || { bg:'rgba(255,255,255,.04)', border:'rgba(255,255,255,.08)', text:'rgba(255,255,255,.4)', icon:'•' };
 
-const DisplayList = ({ table, title }) => {
-    const [data, setData] = useState([]);
-    const [loading, setLoading] = useState(true);
-    const [searchTerm, setSearchTerm] = useState('');
+/* avatar initials from name list */
+function MemberAvatars({ names }) {
+  if (!names) return null;
+  const arr = names.split(',').map(n => n.trim()).filter(Boolean);
+  return (
+    <div className="flex flex-col gap-1.5 mt-0.5">
+      {arr.slice(0, 3).map((n, idx) => (
+        <div key={idx} className="flex items-center gap-2 group/member">
+          <div className="w-6 h-6 rounded-lg bg-gradient-to-br from-zinc-800 to-black border border-white/10 flex items-center justify-center text-[8px] font-bold text-white uppercase shrink-0 shadow-sm group-hover/member:border-red-500/50 transition-colors">
+            {n.split(' ').map(w=>w[0]).join('').slice(0,2)}
+          </div>
+          <span className="text-[11px] font-medium text-zinc-400 group-hover/member:text-white transition-colors truncate">{n}</span>
+        </div>
+      ))}
+      {arr.length > 3 && (
+        <div className="pl-1 text-[9px] font-bold text-zinc-600 italic">
+          + {arr.length - 3} lainnya
+        </div>
+      )}
+    </div>
+  );
+}
 
-    useEffect(() => {
-        const fetchData = async () => {
-            setLoading(true);
-            try {
-                const { data: result, error } = await supabase
-                    .from(table)
-                    .select('*')
-                    .order('created_at', { ascending: false });
-                
-                if (error || !result || result.length === 0) {
-                    throw new Error("No data or error");
-                } else {
-                    setData(result);
-                }
-            } catch (err) {
-                // FALLBACK MOCK DATA FOR DEMO PURPOSES
-                console.log("Using mock data for demo purposes");
-                const mockData = [
-                    {
-                        id: "sys_mock_a1b2c3",
-                        title: table === 'prestasi' ? "Juara 1 Cyber Defense Competition" : "Advanced Cryptography Implementation",
-                        description: table === 'prestasi' ? "Tim Foresty berhasil menempati peringkat pertama dalam kompetisi keamanan siber tingkat internasional." : "Penetrasi sistem dan simulasi pengamanan enkripsi tingkat tinggi pada infrastruktur grid.",
-                        members: "Agent K, Agent J, Override",
-                        category: table === 'prestasi' ? "COMPETITION" : "RESEARCH",
-                        created_at: new Date().toISOString(),
-                        photo_url: "https://images.unsplash.com/photo-1526374965328-7f61d4dc18c5?q=80&w=1000&auto=format&fit=crop",
-                        repo_link: "#"
-                    },
-                    {
-                        id: "sys_mock_x9y8z7",
-                        title: table === 'prestasi' ? "Medali Emas Hackathon 2026" : "Zero-Day Vulnerability Scanning System",
-                        description: table === 'prestasi' ? "Menciptakan solusi deteksi anomali pada network traffic secara real-time." : "Pengembangan algoritma machine learning untuk mendeteksi ancaman siber (zero-day exploit) lebih cepat.",
-                        members: "Cipher, Null, Void",
-                        category: table === 'prestasi' ? "HACKATHON" : "A.I SECURITY",
-                        created_at: new Date(Date.now() - 86400000 * 30).toISOString(),
-                        photo_url: "https://images.unsplash.com/photo-1618060932014-4bcd4f31c51a?q=80&w=1000&auto=format&fit=crop",
-                        repo_link: "#"
-                    },
-                    {
-                        id: "sys_mock_q1w2e3",
-                        title: table === 'prestasi' ? "Penghargaan Lab Terbaik" : "Blockchain Forensics Automation",
-                        description: table === 'prestasi' ? "Dinobatkan sebagai laboratorium dengan kontribusi riset terbanyak di bidang keamanan siber." : "Metode otomasi dalam melacak transaksi anonim pada jaringan blockchain (crypto-tracking).",
-                        category: "HONOR",
-                        created_at: new Date(Date.now() - 86400000 * 90).toISOString(),
-                        photo_url: "https://images.unsplash.com/photo-1550751827-4bd374c3f58b?q=80&w=1000&auto=format&fit=crop",
-                    }
-                ];
-                setData(mockData);
-            }
-            setLoading(false);
-        };
-        fetchData();
-        window.scrollTo(0, 0);
-    }, [table]);
+function DataCard({ item, cfg, i, table }) {
+  const title = item.title || item.name || 'Untitled';
+  const desc  = item.description || item.competition_name || '';
+  const names = item.members || item.contributors || '';
+  const img   = toDrive(item.photo_url);
+  const cat   = getCat(item.category);
+  const year  = item.created_at ? new Date(item.created_at).getFullYear() : null;
+  const isPrestasi = table === 'prestasi';
 
-    const filteredData = data.filter(item => {
-        const titleText = item.title || item.title_achievement || item.name || '';
-        const descText = item.description || item.competition_name || item.institution || '';
-        return titleText.toLowerCase().includes(searchTerm.toLowerCase()) || 
-               descText.toLowerCase().includes(searchTerm.toLowerCase());
-    });
+  return (
+    <motion.div
+      layout
+      initial={{ opacity:0, y:28 }}
+      animate={{ opacity:1, y:0 }}
+      exit={{ opacity:0, scale:.95 }}
+      transition={{ delay: i*.06, duration:.5, ease:[.22,1,.36,1] }}
+      whileHover={{ y:-5 }}
+      className="group relative bg-[#0D0D1A] rounded-[24px] overflow-hidden border border-white/[.05] flex flex-col h-full shadow-lg hover:border-white/[.12] transition-all duration-400"
+    >
+      {/* Category Badge */}
+      <div className="absolute top-4 left-4 z-30">
+        <span className="flex items-center gap-1 px-2.5 py-1 rounded-full backdrop-blur-md border border-white/10 text-[8px] font-bold uppercase tracking-widest text-white shadow-lg"
+          style={{ background: isPrestasi ? 'rgba(245,158,11,0.75)' : 'rgba(255,255,255,0.05)' }}>
+          {cat.icon} {item.category || 'Lab'}
+        </span>
+      </div>
 
-    if (loading) return (
-        <div className="min-h-screen bg-[#110000] flex flex-col items-center justify-center p-6 pt-24 selection:bg-primary selection:text-white relative overflow-hidden">
-            <div className="scanline-bar"></div>
-            <motion.div 
-                animate={{ rotate: 360 }} 
-                transition={{ duration: 2, repeat: Infinity, ease: "linear" }}
-                className="w-16 h-16 border-2 border-primary-dark/20 border-t-primary rounded-full mb-6 shadow-[0_0_15px_rgba(237,27,36,0.5)]"
-            />
-            <div className="flex flex-col items-center gap-3">
-                <p className="text-sm font-mono text-primary animate-pulse tracking-[0.3em] uppercase">Initializing Secure Link...</p>
-                <div className="h-1 w-48 bg-[#1a0000] rounded overflow-hidden">
-                    <motion.div 
-                        initial={{ width: "0%" }}
-                        animate={{ width: "100%" }}
-                        transition={{ duration: 1.5, repeat: Infinity }}
-                        className="h-full bg-primary"
-                    />
+      {/* Image / Icon Section */}
+      <div className="relative h-28 md:h-44 w-full overflow-hidden shrink-0">
+        {img ? (
+          <>
+            <img src={img} alt={title} className="w-full h-full object-cover grayscale-[0.2] group-hover:grayscale-0 group-hover:scale-105 transition-all duration-700" />
+            <div className="absolute inset-0 bg-gradient-to-t from-[#0D0D1A] via-[#0D0D1A]/20 to-transparent" />
+          </>
+        ) : (
+          <div className="w-full h-full flex items-center justify-center bg-zinc-900/50 relative">
+            <div className="absolute inset-0 opacity-10 bg-grid" />
+            <cfg.Icon size={24} className="md:size-[32px]" style={{ color: cfg.color, opacity: 0.3 }} />
+          </div>
+        )}
+        
+        {year && (
+          <div className="absolute bottom-3 right-3 z-20 px-1.5 py-0.5 rounded bg-black/40 backdrop-blur-sm text-[8px] font-mono-lab text-zinc-500">
+            {year}
+          </div>
+        )}
+      </div>
+
+      {/* Content Section */}
+      <div className="p-3 md:p-5 flex flex-col flex-1 relative">
+        <div className="mb-3 flex-1">
+          <h2 className="font-display font-bold text-[12px] md:text-lg text-white mb-1 leading-snug group-hover:text-red-400 transition-colors line-clamp-2">
+            {title}
+          </h2>
+          <p className="hidden md:block text-zinc-500 text-[12px] leading-relaxed line-clamp-2 italic">
+            {desc}
+          </p>
+        </div>
+
+        {/* Contributors & Action */}
+        <div className="pt-3 border-t border-white/[.04] flex items-center justify-between gap-2">
+          <div className="flex flex-col">
+            <span className="text-[7px] font-mono-lab text-zinc-700 uppercase tracking-widest mb-1">Kontributor</span>
+            <MemberAvatars names={names} />
+          </div>
+          
+          {item.repo_link ? (
+            <a href={item.repo_link} target="_blank" rel="noopener noreferrer"
+              className="w-8 h-8 md:w-10 md:h-10 rounded-lg md:rounded-xl flex items-center justify-center bg-white/[.03] border border-white/10 text-white hover:bg-red-600 hover:border-red-500 transition-all duration-300">
+              <ExternalLink size={12} className="md:size-[14px]" />
+            </a>
+          ) : (
+             <Trophy size={12} className="text-zinc-800 md:size-[14px]" />
+          )}
+        </div>
+
+        {isPrestasi && (
+          <div className="absolute top-0 right-6 w-px h-8 bg-gradient-to-b from-amber-500 to-transparent opacity-30" />
+        )}
+      </div>
+    </motion.div>
+  );
+}
+
+export default function DisplayList({ table, title }) {
+  const [data,    setData]   = useState([]);
+  const [loading, setLoading] = useState(true);
+  const [q,       setQ]      = useState('');
+  const [cat,     setCat]    = useState('ALL');
+
+  const cfg = CFG[table] || CFG.awards;
+
+  useEffect(() => {
+    const load = async () => {
+      setLoading(true);
+      try {
+        const { data: res, error } = await supabase.from(table).select('*').order('created_at', { ascending:false });
+        if (error || !res?.length) throw new Error();
+        setData(res);
+      } catch { setData(MOCK(table)); }
+      setLoading(false);
+    };
+    load();
+    window.scrollTo(0, 0);
+  }, [table]);
+
+  const cats     = ['ALL', ...new Set(data.map(d => d.category).filter(Boolean))];
+  const filtered = data.filter(d => {
+    const t = (d.title || d.name || '').toLowerCase();
+    const s = (d.description || '').toLowerCase();
+    const m = (d.members || d.contributors || '').toLowerCase();
+    return (t.includes(q.toLowerCase()) || s.includes(q.toLowerCase()) || m.includes(q.toLowerCase()))
+      && (cat === 'ALL' || d.category === cat);
+  });
+
+  if (loading) return (
+    <div className="min-h-screen bg-[#06060E] flex items-center justify-center">
+      <div className="flex flex-col items-center gap-4">
+        <div className="w-14 h-14 rounded-full border-2 animate-spin" style={{ borderColor:`${cfg.color}22`, borderTopColor:cfg.color }} />
+        <p className="text-[11px] font-mono-lab uppercase tracking-widest animate-pulse" style={{ color:cfg.color }}>Memuat {title}...</p>
+      </div>
+    </div>
+  );
+
+  return (
+    <div className="min-h-screen bg-[#06060E] text-[#E8E8F2]">
+      <div className="scanline" />
+      <div className="fixed inset-0 pointer-events-none">
+        <div className="absolute top-0 right-0 w-[500px] h-[500px] blur-[200px] rounded-full opacity-60" style={{ background:`${cfg.heroGlow}18` }} />
+        <div className="absolute inset-0 bg-grid opacity-35" />
+      </div>
+
+      {/* HERO */}
+      <section className="relative pt-28 pb-16 overflow-hidden border-b border-white/[.04]">
+        <div className="relative z-10 max-w-6xl mx-auto px-5 md:px-10">
+          <motion.div initial={{ opacity:0, y:-16 }} animate={{ opacity:1, y:0 }}>
+            <span className="text-[10px] font-mono-lab tracking-[0.25em] uppercase mb-4 block" style={{ color:cfg.color }}>
+              Foresty Lab · {cfg.label}
+            </span>
+            <div className="flex flex-col md:flex-row md:items-end justify-between gap-6">
+              <div className="flex items-start gap-5">
+                <div className="w-16 h-16 rounded-2xl flex items-center justify-center shrink-0 mt-1"
+                  style={{ background:cfg.glow, border:`1px solid ${cfg.border}`, boxShadow:`0 0 40px ${cfg.color}22` }}>
+                  <cfg.Icon size={28} style={{ color:cfg.color }} />
                 </div>
+                <div>
+                  <h1 className="font-display font-extrabold text-4xl md:text-7xl text-white tracking-tight leading-[.92] mb-3">{title}</h1>
+                  <p className="text-zinc-600 text-sm max-w-md leading-relaxed">{cfg.desc}</p>
+                </div>
+              </div>
+              <div className="text-center md:text-right shrink-0">
+                <div className="font-display font-extrabold text-5xl text-white">{filtered.length}</div>
+                <div className="text-[10px] font-mono-lab text-zinc-700 uppercase tracking-widest mt-1">Records</div>
+              </div>
             </div>
+          </motion.div>
         </div>
-    );
+      </section>
 
-    return (
-        <div className="min-h-screen bg-[#110000] text-gray-200 font-sans selection:bg-primary selection:text-white relative pb-24 overflow-x-hidden">
-            {/* Global scanline and grid */}
-            <div className="scanline-bar pointer-events-none"></div>
-            <div className="absolute inset-0 bg-grid-red pointer-events-none opacity-20"></div>
+      {/* STICKY FILTER */}
+      <div className="sticky top-[72px] z-30 bg-[#06060E]/97 backdrop-blur-[28px] border-b border-white/[.04]">
+        <div className="max-w-6xl mx-auto px-5 md:px-10 py-3 flex items-center gap-3 flex-wrap">
+          <div className="flex items-center gap-1.5 overflow-x-auto no-scrollbar flex-1">
+            {cats.map(c => {
+              const active = cat === c;
+              const cc = getCat(c);
+              const count = c === 'ALL' ? data.length : data.filter(d=>d.category===c).length;
+              return (
+                <button key={c} onClick={() => setCat(c)}
+                  className={`shrink-0 px-3 py-1.5 rounded-lg text-[11px] font-bold uppercase tracking-wider transition-all flex items-center gap-1.5 ${active ? 'text-white border' : 'text-zinc-600 hover:text-white border border-transparent'}`}
+                  style={active ? { background:cc.bg, borderColor:cc.border, color:cc.text } : {}}>
+                  {cc.icon} {c === 'ALL' ? 'Semua' : c}
+                  <span className={`text-[9px] px-1.5 py-0.5 rounded-full ${active ? '' : 'bg-white/[.04] text-zinc-600'}`}
+                    style={active ? { background:cc.bg, color:cc.text } : {}}>{count}</span>
+                </button>
+              );
+            })}
+          </div>
+          <div className="relative shrink-0">
+            <Search size={12} className="absolute left-3 top-1/2 -translate-y-1/2 text-zinc-600" />
+            <input type="text" placeholder={`Cari ${title.toLowerCase()}...`} value={q} onChange={e=>setQ(e.target.value)}
+              className="w-48 bg-white/[.03] border border-white/[.07] focus:border-white/[.15] text-white text-[12px] rounded-lg pl-8 pr-3 py-2 outline-none transition-all placeholder:text-zinc-700 font-mono-lab" />
+          </div>
+        </div>
+      </div>
 
-            <div className="relative max-w-6xl mx-auto px-6 pt-32 z-10">
-                {/* Header Container */}
-                <motion.div 
-                    initial={{ opacity: 0, y: -20 }}
-                    animate={{ opacity: 1, y: 0 }}
-                    className="mb-16"
-                >
-                    <div className="flex items-center gap-6 mb-6">
-                        <div className="p-4 bg-gradient-to-br from-[#800508] to-primary/80 rounded-xl shadow-[0_0_25px_rgba(237,27,36,0.4)] border border-red-500/30">
-                            {table === 'prestasi' ? <Award className="w-8 h-8 text-white" /> : 
-                             table === 'projects' ? <Briefcase className="w-8 h-8 text-white" /> :
-                             <Database className="w-8 h-8 text-white" />}
-                        </div>
-                        <div>
-                            <div className="flex items-center gap-3">
-                                <h1 className="text-4xl md:text-5xl font-bold uppercase tracking-wider text-white font-cyber drop-shadow-lg">
-                                    <span className="text-primary opacity-80">SYS_</span>DATA_{table.toUpperCase()}
-                                </h1>
-                            </div>
-                            <p className="text-xs font-mono text-primary/70 tracking-widest uppercase mt-2">
-                                [ ACTIVE_MODULE: {title} ]
-                            </p>
-                        </div>
-                    </div>
+      {/* GRID */}
+      <div className="relative z-10 max-w-6xl mx-auto px-5 md:px-10 py-12">
+        <motion.div className="grid grid-cols-2 lg:grid-cols-3 gap-3 md:gap-8">
+          <AnimatePresence mode="popLayout">
+            {filtered.map((item, i) => <DataCard key={item.id} item={item} cfg={cfg} i={i} table={table} />)}
+          </AnimatePresence>
+        </motion.div>
 
-                    {/* Search / Filter Bar */}
-                    <div className="relative mt-10 group max-w-2xl">
-                        <div className="absolute inset-y-0 left-0 flex items-center pl-4 pointer-events-none text-primary/50 group-focus-within:text-primary transition-colors">
-                            <Search className="w-5 h-5" />
-                        </div>
-                        <input 
-                            type="text" 
-                            placeholder="Query records, entities, or anomalies..." 
-                            value={searchTerm}
-                            onChange={(e) => setSearchTerm(e.target.value)}
-                            className="w-full bg-[#0a0000] border border-primary-dark/30 text-white text-sm hover:border-primary/50 focus:ring-1 focus:ring-primary focus:border-primary block pl-12 p-4 transition-all duration-400 shadow-[inset_0_0_25px_rgba(0,0,0,0.6)] font-mono placeholder:text-gray-700 rounded-lg outline-none"
-                        />
-                        <div className="absolute inset-y-0 right-0 flex items-center pr-4">
-                            <div className="px-3 py-1 bg-primary/10 text-[10px] font-mono text-primary/80 border border-primary/20 rounded shadow-[0_0_10px_rgba(237,27,36,0.1)]">
-                                {filteredData.length} records
-                            </div>
-                        </div>
-                    </div>
-                </motion.div>
-
-                {/* Grid Container */}
-                <motion.div 
-                    variants={containerVariants}
-                    initial="hidden"
-                    animate="show"
-                    className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6"
-                >
-                    <AnimatePresence>
-                        {filteredData.map((item) => {
-                            const cardTitle = item.title || item.title_achievement || item.name;
-                            const cardSub = item.description || item.competition_name || item.institution;
-                            // Safe fallback for id visualization
-                            const identifier = item.id ? String(item.id).substring(0, 8) : 'UNK_ID';
-                            
-                            return (
-                                <motion.div 
-                                    key={item.id || Math.random()} 
-                                    variants={itemVariants}
-                                    layout
-                                    className="bg-[#0a0000] border border-primary-dark/20 rounded-xl group hover:border-primary/50 transition-all duration-300 overflow-hidden flex flex-col relative hover:shadow-[0_8px_30px_rgba(237,27,36,0.2)] hover:-translate-y-1.5"
-                                >
-                                    {/* Cyber UI Overlays */}
-                                    <div className="absolute top-0 right-0 w-24 h-24 bg-gradient-to-br from-primary/10 to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-500 pointer-events-none"></div>
-                                    <div className="absolute right-0 top-1/2 w-[2px] h-16 bg-primary/40 group-hover:bg-primary transition-colors shadow-[0_0_15px_rgba(237,27,36,1)] translate-y-[-50%]"></div>
-
-                                    {/* Status Bar */}
-                                    <div className="flex justify-between items-center bg-[#150000] px-5 py-3 border-b border-primary-dark/20">
-                                        <div className="flex items-center gap-2">
-                                            <div className="w-2 h-2 rounded-full bg-red-500 shadow-[0_0_8px_rgba(239,68,68,0.8)] animate-pulse"></div>
-                                            <span className="text-[10px] font-mono text-gray-400 uppercase tracking-widest leading-none mt-0.5">DB // {identifier}</span>
-                                        </div>
-                                        {item.created_at && (
-                                            <span className="text-[10px] font-mono font-bold text-primary bg-primary/10 px-2 py-0.5 rounded border border-primary/20">
-                                                {new Date(item.created_at).getFullYear()}
-                                            </span>
-                                        )}
-                                    </div>
-
-                                    {/* Image Section for Prestasi */}
-                                    {table === 'prestasi' && item.photo_url && (
-                                        <div className="w-full h-52 bg-[#050000] border-b border-primary-dark/30 relative overflow-hidden group-hover:border-primary/50 transition-colors">
-                                            <div className="absolute inset-0 bg-primary/10 mix-blend-overlay z-10 opacity-0 group-hover:opacity-100 transition-opacity duration-300 pointer-events-none"></div>
-                                            {/* Digital grid overlay on image */}
-                                            <div className="absolute inset-0 bg-grid-red/30 z-10 opacity-30 mix-blend-screen pointer-events-none"></div>
-                                            <img 
-                                                src={getDirectDriveLink(item.photo_url)} 
-                                                alt={cardTitle} 
-                                                className="w-full h-full object-cover grayscale-[40%] contrast-[1.1] filter group-hover:grayscale-0 group-hover:scale-105 transition-all duration-700 ease-out"
-                                            />
-                                        </div>
-                                    )}
-
-                                    {/* Body */}
-                                    <div className="p-6 flex-grow flex flex-col z-20">
-                                        <div className="flex-grow">
-                                            <h2 className="font-bold text-xl mb-3 text-white group-hover:text-primary transition-colors duration-300 font-cyber flex items-start gap-2 leading-tight">
-                                                <span className="text-primary text-base opacity-70 font-mono mt-0.5">&gt;</span>
-                                                {cardTitle}
-                                            </h2>
-                                            <p className="text-sm text-gray-400 mb-6 leading-relaxed line-clamp-4">
-                                                {cardSub}
-                                            </p>
-                                        </div>
-                                        
-                                        {(item.members || item.contributors) && (
-                                            <div className="mb-5 bg-[#050000] border border-primary-dark/30 p-4 rounded-lg flex items-start gap-3 shadow-[inset_0_0_10px_rgba(0,0,0,0.8)]">
-                                                <Terminal className="w-4 h-4 text-primary mt-0.5 shrink-0 opacity-80" />
-                                                <div>
-                                                    <p className="text-[10px] font-mono text-primary/70 uppercase tracking-widest mb-1.5">Assigned Agents:</p>
-                                                    <p className="text-xs text-gray-300 font-sans leading-relaxed">{item.members || item.contributors}</p>
-                                                </div>
-                                            </div>
-                                        )}
-
-                                        {/* Footer tags */}
-                                        <div className="pt-5 border-t border-primary-dark/20 flex flex-wrap gap-3 items-center justify-between">
-                                            <div className="flex gap-2">
-                                                {item.category && (
-                                                    <span className="bg-[#150000] border border-primary-dark/40 text-gray-300 px-2.5 py-1 text-[10px] font-mono uppercase tracking-widest rounded group-hover:border-primary/50 group-hover:bg-primary/5 transition-all">
-                                                        {item.category}
-                                                    </span>
-                                                )}
-                                            </div>
-                                            
-                                            {item.repo_link && (
-                                                <a 
-                                                    href={item.repo_link} 
-                                                    target="_blank" 
-                                                    rel="noopener noreferrer" 
-                                                    className="flex items-center gap-1.5 text-[11px] text-primary hover:text-white font-mono uppercase tracking-widest transition-colors z-20"
-                                                >
-                                                    EXPLORE <ExternalLink className="w-3.5 h-3.5" />
-                                                </a>
-                                            )}
-                                        </div>
-                                    </div>
-                                </motion.div>
-                            );
-                        })}
-                    </AnimatePresence>
-                </motion.div>
-
-                {/* Empty State */}
-                {filteredData.length === 0 && !loading && (
-                    <motion.div 
-                        initial={{ opacity: 0, scale: 0.95 }}
-                        animate={{ opacity: 1, scale: 1 }}
-                        className="py-32 flex flex-col items-center justify-center text-center border-2 border-dashed border-primary-dark/30 rounded-2xl bg-[#0a0000]/60 relative overflow-hidden"
-                    >
-                        {/* Empty state glow */}
-                        <div className="absolute top-1/2 left-1/2 w-64 h-64 bg-primary/5 rounded-full blur-[100px] -translate-x-1/2 -translate-y-1/2"></div>
-                        
-                        <ShieldAlert className="w-20 h-20 text-primary-dark/40 mb-6 drop-shadow-[0_0_15px_rgba(237,27,36,0.2)]" />
-                        <h3 className="text-2xl font-cyber text-primary mb-3 uppercase tracking-widest drop-shadow-md">ERR: NO_RECORDS_FOUND</h3>
-                        <p className="text-gray-400 font-mono text-sm max-w-md leading-relaxed">
-                            Search parameters yielded zero results in the <span className="text-white">{table}</span> database cluster. Please adjust your query or reset the filter.
-                        </p>
-                    </motion.div>
-                )}
+        {!filtered.length && (
+          <motion.div initial={{ opacity:0 }} animate={{ opacity:1 }}
+            className="py-36 flex flex-col items-center text-center border border-dashed border-white/[.04] rounded-2xl mt-4">
+            <div className="w-16 h-16 rounded-full border border-white/[.06] flex items-center justify-center mb-4">
+              <ShieldAlert size={24} className="text-zinc-700" />
             </div>
-        </div>
-    );
-};
-
-export default DisplayList;
+            <h3 className="font-display font-bold text-lg text-zinc-600 mb-2">Tidak Ada Data</h3>
+            <p className="text-zinc-700 text-sm mb-6">Coba ubah kata kunci pencarian atau reset filter.</p>
+            <button onClick={() => { setQ(''); setCat('ALL'); }} className="btn-ghost text-xs py-2 px-5">Reset Filter</button>
+          </motion.div>
+        )}
+      </div>
+    </div>
+  );
+}
