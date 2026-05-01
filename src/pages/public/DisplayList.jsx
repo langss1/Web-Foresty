@@ -84,6 +84,8 @@ function DataCard({ item, cfg, i, table }) {
   const year  = item.created_at ? new Date(item.created_at).getFullYear() : null;
   const isPrestasi = table === 'prestasi';
 
+  const [loading, setLoading] = useState(true);
+
   return (
     <motion.div
       layout
@@ -103,10 +105,20 @@ function DataCard({ item, cfg, i, table }) {
       </div>
 
       {/* Image / Icon Section */}
-      <div className="relative h-28 md:h-44 w-full overflow-hidden shrink-0">
+      <div className="relative h-28 md:h-44 w-full overflow-hidden shrink-0 bg-[#0A0A16]">
+        {loading && img && (
+          <div className="absolute inset-0 flex items-center justify-center z-10 bg-[#0A0A16]">
+            <div className="relative w-8 h-8">
+              <div className="absolute inset-0 border-2 border-red-600/10 rounded-full" />
+              <div className="absolute inset-0 border-2 border-t-red-600 rounded-full animate-spin shadow-[0_0_10px_rgba(220,38,38,0.2)]" />
+            </div>
+          </div>
+        )}
         {img ? (
           <>
-            <img src={img} alt={title} className="w-full h-full object-cover grayscale-[0.2] group-hover:grayscale-0 group-hover:scale-105 transition-all duration-700" />
+            <img src={img} alt={title} 
+              onLoad={() => setLoading(false)}
+              className={`w-full h-full object-cover grayscale-[0.2] group-hover:grayscale-0 group-hover:scale-105 transition-all duration-1000 ease-out ${loading ? 'opacity-0 scale-105' : 'opacity-100 scale-100'}`} />
             <div className="absolute inset-0 bg-gradient-to-t from-[#0D0D1A] via-[#0D0D1A]/20 to-transparent" />
           </>
         ) : (

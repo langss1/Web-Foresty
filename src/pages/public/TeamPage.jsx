@@ -76,25 +76,34 @@ const DC = {
 const C = (d) => DC[d] || DC.ACADEMIC;
 
 function AdvisorCard({ m, i }) {
-  const img = toDriveImg(m.photo_url, m.name);
   const [showAll, setShowAll] = useState(false);
+  const [loading, setLoading] = useState(true);
+  const img = toDriveImg(m.photo_url, m.name);
   const isVera = m.name.includes('Vera');
   
   return (
     <motion.div initial={{ opacity:0, y:20 }} animate={{ opacity:1, y:0 }} transition={{ delay:i*.1, duration:.55 }}
       className={`relative rounded-[24px] overflow-hidden group border transition-all duration-500 bg-[#0A0A16] shadow-xl hover:shadow-red/5 ${isVera ? 'border-red-500/30' : 'border-white/[.05]'}`}>
       
-      {/* Top Background Pattern */}
       <div className={`absolute top-0 left-0 right-0 h-24 opacity-[0.03] pointer-events-none ${isVera ? 'bg-red-500' : 'bg-white'}`} style={{ maskImage: 'radial-gradient(circle at 2px 2px, black 1px, transparent 0)', maskSize: '12px 12px' }} />
 
       <div className="relative z-10 flex flex-col items-center p-6 text-center">
-        {/* Photo with Ring */}
         <div className="relative mb-5">
           <div className={`absolute -inset-1 rounded-full blur-md opacity-20 transition-opacity group-hover:opacity-40 ${isVera ? 'bg-red-500' : 'bg-zinc-500'}`} />
-          <div className={`relative w-28 h-28 rounded-full overflow-hidden border-2 ${isVera ? 'border-red-500/50' : 'border-white/10'}`}>
+          <div className={`relative w-28 h-28 rounded-full overflow-hidden border-2 ${isVera ? 'border-red-500/50' : 'border-white/10'} bg-zinc-900/50`}>
+            {loading && (
+              <div className="absolute inset-0 flex items-center justify-center z-10">
+                <div className="relative w-8 h-8">
+                  <div className="absolute inset-0 border-2 border-red-600/20 rounded-full" />
+                  <div className="absolute inset-0 border-2 border-t-red-600 rounded-full animate-spin shadow-[0_0_10px_rgba(220,38,38,0.3)]" />
+                </div>
+              </div>
+            )}
             {img ? (
-              <img src={img} alt={m.name} className="w-full h-full object-cover grayscale-[0.2] group-hover:grayscale-0 transition-all duration-500" 
-                onError={e=>{e.target.src = 'https://ui-avatars.com/api/?name='+encodeURIComponent(m.name)+'&background=18181b&color=71717a&size=512'}} />
+              <img src={img} alt={m.name} 
+                onLoad={() => setLoading(false)}
+                className={`w-full h-full object-cover grayscale-[0.2] group-hover:grayscale-0 transition-all duration-700 ease-out ${loading ? 'opacity-0 scale-105' : 'opacity-100 scale-100'}`}
+                onError={e=>{setLoading(false); e.target.src = 'https://ui-avatars.com/api/?name='+encodeURIComponent(m.name)+'&background=18181b&color=71717a&size=512'}} />
             ) : (
               <div className="w-full h-full flex items-center justify-center bg-zinc-900">
                 <UserCircle size={48} className="text-zinc-800" />
@@ -153,17 +162,29 @@ function MemberCard({ m, i }) {
   const c = C(m.department);
   const img = toDriveImg(m.photo_url, m.name);
   const [showAll, setShowAll] = useState(false);
+  const [loading, setLoading] = useState(true);
+
   return (
     <motion.div initial={{ opacity: 0, y: 24 }} animate={{ opacity: 1, y: 0 }} exit={{ opacity: 0, scale: .95 }}
       transition={{ delay: i * .055, duration: .5 }} whileHover={{ y: -10 }}
       className="flex flex-col group h-full">
-      <div className="relative aspect-[4/5] rounded-3xl overflow-hidden mb-6 bg-zinc-900 shadow-2xl">
+      <div className="relative aspect-[4/5] rounded-3xl overflow-hidden mb-6 bg-[#0A0A16] shadow-2xl border border-white/[.03]">
+        {loading && img && (
+          <div className="absolute inset-0 flex items-center justify-center z-10 bg-[#0A0A16]">
+            <div className="relative w-10 h-10">
+              <div className="absolute inset-0 border-2 border-red-600/10 rounded-full" />
+              <div className="absolute inset-0 border-2 border-t-red-600 rounded-full animate-spin shadow-[0_0_15px_rgba(220,38,38,0.2)]" />
+            </div>
+          </div>
+        )}
         {img ? (
-          <img src={img} alt={m.name} className="w-full h-full object-cover grayscale-[0.2] group-hover:grayscale-0 group-hover:scale-110 transition-all duration-700"
-            onError={e => { e.target.src = 'https://ui-avatars.com/api/?name=' + encodeURIComponent(m.name) + '&background=18181b&color=a1a1aa&size=512' }} />
+          <img src={img} alt={m.name} 
+            onLoad={() => setLoading(false)}
+            className={`w-full h-full object-cover grayscale-[0.2] group-hover:grayscale-0 group-hover:scale-110 transition-all duration-1000 ease-out ${loading ? 'opacity-0 scale-105' : 'opacity-100 scale-100'}`}
+            onError={e => { setLoading(false); e.target.src = 'https://ui-avatars.com/api/?name=' + encodeURIComponent(m.name) + '&background=18181b&color=a1a1aa&size=512' }} />
         ) : (
-          <div className="w-full h-full flex items-center justify-center bg-zinc-800">
-            <UserCircle size={80} className="text-zinc-700" />
+          <div className="w-full h-full flex items-center justify-center bg-zinc-900">
+            <UserCircle size={80} className="text-zinc-800" />
           </div>
         )}
         {/* Overlay info */}
