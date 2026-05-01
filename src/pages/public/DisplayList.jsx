@@ -76,8 +76,8 @@ function MemberAvatars({ names }) {
 }
 
 function DataCard({ item, cfg, i, table }) {
-  const title = item.title || item.name || 'Untitled';
-  const desc  = item.description || item.competition_name || '';
+  const title = item.title_achievement || item.title || item.name || 'Untitled';
+  const desc  = item.description || item.competition_name || item.institution || '';
   const names = item.members || item.contributors || '';
   const img   = toDrive(item.photo_url);
   const cat   = getCat(item.category);
@@ -184,9 +184,17 @@ export default function DisplayList({ table, title }) {
       setLoading(true);
       try {
         const { data: res, error } = await supabase.from(table).select('*').order('created_at', { ascending:false });
-        if (error || !res?.length) throw new Error();
-        setData(res);
-      } catch { setData(MOCK(table)); }
+        if (error) throw error;
+        // Only use MOCK if there's no data AND it's a specific table we want to mock for development
+        if (!res?.length) {
+          setData([]); // It's empty, but not an error
+        } else {
+          setData(res);
+        }
+      } catch (err) { 
+        console.error("Fetch error:", err);
+        setData(MOCK(table)); 
+      }
       setLoading(false);
     };
     load();

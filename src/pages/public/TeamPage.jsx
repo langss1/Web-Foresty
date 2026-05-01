@@ -230,9 +230,19 @@ export default function TeamPage() {
       setLoading(true);
       try {
         const { data, error } = await supabase.from('struktural').select('*').order('created_at');
-        if (error || !data?.length) throw new Error();
-        setMembers(data.map(d => ({ ...d, tags: Array.isArray(d.tags) ? d.tags : d.skills?.split?.(',').map(s => s.trim()).filter(Boolean) || [] })));
-      } catch { setMembers(MOCK); }
+        if (error) throw error;
+        if (data && data.length > 0) {
+          setMembers(data.map(d => ({ ...d, tags: Array.isArray(d.tags) ? d.tags : d.skills?.split?.(',').map(s => s.trim()).filter(Boolean) || [] })));
+        } else {
+          // If the table exists but is empty, we still fallback to MOCK for now 
+          // because the user might not have set up the 'struktural' table yet.
+          // But we'll log it.
+          setMembers(MOCK);
+        }
+      } catch (err) { 
+        console.error("Team fetch error:", err);
+        setMembers(MOCK); 
+      }
       setLoading(false);
     };
     load();
