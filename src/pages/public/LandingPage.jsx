@@ -1,13 +1,21 @@
 import React, { useEffect, useState } from 'react';
 import { Link } from 'react-router-dom';
 import { motion } from 'framer-motion';
-import { ArrowRight, Shield, Search, Lock, Cpu, Globe, ChevronRight, BookOpen, Zap, Users, Award, Code2, Eye, Brain, Target, MonitorCheck, ClipboardCheck, Flag, Mail } from 'lucide-react';
+import { ArrowRight, Shield, Search, Lock, Cpu, Globe, ChevronRight, BookOpen, Zap, Users, Award, Code2, Eye, Brain, Target, MonitorCheck, ClipboardCheck, Flag, Mail, NetworkIcon } from 'lucide-react';
 import maskotImg from '../../assets/Maskot.png';
 import sidikJariImg from '../../assets/Sidik Jari.png';
 import laptopImg from '../../assets/Laptop.png';
 import searchImg from '../../assets/Search.png';
 import handImg from '../../assets/Hand.png';
 import bookImg from '../../assets/Book.png';
+
+const IgIcon = ({ size = 24, className = "" }) => (
+  <svg width={size} height={size} viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" className={className}>
+    <rect width="20" height="20" x="2" y="2" rx="5" ry="5" />
+    <path d="M16 11.37A4 4 0 1 1 12.63 8 4 4 0 0 1 16 11.37z" />
+    <line x1="17.5" x2="17.51" y1="6.5" y2="6.5" />
+  </svg>
+);
 
 const fadeUp = {
   hidden: { opacity: 0, y: 32 },
@@ -18,47 +26,47 @@ const PILLARS = [
   {
     num: '01', Icon: Shield,
     title: 'Cybersecurity Research',
-    desc: 'Riset mendalam tentang tren keamanan terbaru, analisis forensik digital, dan pengembangan metode deteksi ancaman siber mutakhir.',
+    desc: 'Riset mendalam tentang keamanan siber, baik analisis forensik digital, pengembangan metode deteksi ancaman ataupun serangan siber',
     img: laptopImg,
     tag: 'Core Research'
   },
   {
     num: '02', Icon: Search,
     title: 'Study Group & CTF',
-    desc: 'Platform belajar kolaboratif dan persiapan kompetisi siber seperti Capture The Flag untuk mahasiswa berprestasi secara nasional maupun internasional.',
+    desc: 'Mentoring atau Belajar keamanan siber dan persiapan kompetisi siber seperti Capture The Flag untuk mahasiswa di telkom university.',
     img: searchImg,
     tag: 'Education'
   },
   {
     num: '03', Icon: Flag,
     title: 'CTF Maker & Competitive',
-    desc: 'Merancang soal CTF berkualitas tinggi, mengelola platform kompetisi, dan mengikuti berbagai ajang Capture The Flag secara aktif di tingkat nasional maupun internasional.',
+    desc: 'Membuat soal CTF berkualitas tinggi, mengelola kompetisi siber, dan mengikuti berbagai ajang Capture The Flag secara aktif di tingkat nasional maupun internasional.',
     img: sidikJariImg,
     tag: 'Competition'
   },
 ];
 
 const EXPERTISE = [
-  { Icon: Search,        label: 'Digital Forensics',    sub: 'Toolkit & Analysis',      color: '#3b82f6' },
-  { Icon: Shield,        label: 'Infrastructure Sec',   sub: 'Network Defense',          color: '#E8192C' },
-  { Icon: Cpu,           label: 'Reverse Engineering',  sub: 'Malware Analysis',         color: '#f59e0b' },
-  { Icon: Globe,         label: 'CTF Platform',         sub: 'Scenario Design',          color: '#10b981' },
-  { Icon: Code2,         label: 'Exploit Dev',          sub: 'Vulnerability Research',   color: '#8b5cf6' },
-  { Icon: Eye,           label: 'OSINT',                sub: 'Open Source Intel',        color: '#06b6d4' },
-  { Icon: Brain,         label: 'AI Security',          sub: 'ML Threat Detection',      color: '#a855f7' },
-  { Icon: Target,        label: 'Penetration Testing',  sub: 'Ethical Hacking',          color: '#ef4444' },
-  { Icon: MonitorCheck,  label: 'Blue Team / SOC',      sub: 'Incident Response',        color: '#22d3ee' },
-  { Icon: ClipboardCheck,label: 'Security Audit',       sub: 'Compliance & Assessment',  color: '#84cc16' },
+  { Icon: Search, label: 'Digital Forensics', sub: 'Toolkit & Analysis', color: '#3b82f6' },
+  { Icon: Shield, label: 'Infrastructure Sec', sub: 'Network Defense', color: '#E8192C' },
+  { Icon: Cpu, label: 'Reverse Engineering', sub: 'Malware Analysis', color: '#f59e0b' },
+  { Icon: Globe, label: 'CTF Platform', sub: 'Scenario Design', color: '#10b981' },
+  { Icon: Eye, label: 'OSINT', sub: 'Open Source Intel', color: '#06b6d4' },
+  { Icon: Brain, label: 'AI Security', sub: 'ML Threat Detection', color: '#a855f7' },
+  { Icon: Target, label: 'Penetration Testing', sub: 'Ethical Hacking', color: '#ef4444' },
+  { Icon: MonitorCheck, label: 'Blue Team / SOC', sub: 'Incident Response', color: '#22d3ee' },
+  { Icon: ClipboardCheck, label: 'Security Audit', sub: 'Compliance & Assessment', color: '#84cc16' },
+  { Icon: NetworkIcon, label: 'Network Security', sub: 'Network Security', color: '#cc1616ff' },
 ];
 
 const PORTALS = [
-  { num: '01', label: 'Tim Struktural', desc: 'Kenali dosen pembina, kepala lab, dan pengurus inti laboratorium Foresty.', path: '/team', Icon: Users },
+  { num: '01', label: 'Tim Struktural', desc: 'Kenali dosen pembina dan pengurus inti laboratorium Foresty.', path: '/team', Icon: Users },
   { num: '02', label: 'Prestasi', desc: 'Rekam jejak kemenangan di berbagai kompetisi keamanan siber nasional & internasional.', path: '/prestasi', Icon: Award },
-  { num: '03', label: 'Penghargaan Lab', desc: 'Pengakuan institusional atas kontribusi riset dan inovasi dari laboratorium kami.', path: '/awards', Icon: Zap },
-  { num: '04', label: 'Proyek & Riset', desc: 'Publikasi jurnal, paper ilmiah, dan kolaborasi proyek dengan industri.', path: '/projects', Icon: BookOpen },
+  { num: '03', label: 'Penghargaan Lab', desc: 'Pengakuan institusional dari lembaga atas kontribusi dari asisten laboratorium kami.', path: '/awards', Icon: Zap },
+  { num: '04', label: 'Proyek & Riset', desc: 'Publikasi jurnal, paper ilmiah, dan project yang berfokus pada keamanan siber dan forensik digital.', path: '/projects', Icon: BookOpen },
 ];
 
-const MARQUEE = ['Cybersecurity', 'Digital Forensics', 'Penetration Testing', 'CTF Champions', 'AI Security', 'Malware Analysis', 'OSINT', 'Incident Response', 'Ethical Hacking', 'Reverse Engineering'];
+const MARQUEE = ['Cybersecurity', 'Digital Forensics', 'Penetration Testing', 'CTF Champions', 'AI Security', 'Malware Analysis', 'OSINT', 'Incident Response', 'Ethical Hacking', 'Reverse Engineering', 'Network Security'];
 
 export default function LandingPage() {
   return (
@@ -258,7 +266,7 @@ export default function LandingPage() {
                 initial={{ opacity: 0, y: 32 }}
                 whileInView={{ opacity: 1, y: 0 }}
                 viewport={{ once: true }}
-                transition={{ delay: i * .1, duration: 0.6, ease: [.22,1,.36,1] }}
+                transition={{ delay: i * .1, duration: 0.6, ease: [.22, 1, .36, 1] }}
                 whileHover={{ y: -8 }}
               >
                 <Link to={m.path} className="card group flex flex-col items-center text-center p-8 gap-5 hover:shadow-red block transition-all duration-400 relative overflow-hidden">
@@ -306,8 +314,8 @@ export default function LandingPage() {
                   Tertarik <span className="text-red-shine">bekerja sama?</span>
                 </h2>
                 <div className="flex flex-wrap gap-4">
-                  <a href="mailto:foresty@telkomuniversity.ac.id" className="btn-primary px-8">
-                    <Mail size={18} /> Hubungi Kami
+                  <a href="https://www.instagram.com/foresty.laboratory/" target="_blank" rel="noopener noreferrer" className="btn-primary px-8">
+                    <IgIcon size={18} /> DM ke Instagram
                   </a>
                   <Link to="/team" className="btn-ghost">
                     Struktur Lab

@@ -2,24 +2,19 @@ import { Link } from 'react-router-dom';
 import logoImg from '../../assets/Logo.png';
 import { ArrowRight, MapPin, Mail, ExternalLink } from 'lucide-react';
 
-const GhIcon = () => (
-  <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
-    <path d="M15 22v-4a4.8 4.8 0 0 0-1-3.02c3.18-.35 6.5-1.5 6.5-7a4.6 4.6 0 0 0-1.3-3.2 4.2 4.2 0 0 0-.1-3.2s-1.1-.3-3.5 1.3a12.3 12.3 0 0 0-6.2 0C6.5 2.8 5.4 3.1 5.4 3.1a4.2 4.2 0 0 0-.1 3.2A4.6 4.6 0 0 0 4 9.5c0 5.4 3.3 6.6 6.5 7a4.8 4.8 0 0 0-1 3.02v4"/>
-    <path d="M9 18c-4.5 1.5-5-2-7-2"/>
-  </svg>
-);
+
 const IgIcon = () => (
   <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
-    <rect width="20" height="20" x="2" y="2" rx="5" ry="5"/>
-    <path d="M16 11.37A4 4 0 1 1 12.63 8 4 4 0 0 1 16 11.37z"/>
-    <line x1="17.5" x2="17.51" y1="6.5" y2="6.5"/>
+    <rect width="20" height="20" x="2" y="2" rx="5" ry="5" />
+    <path d="M16 11.37A4 4 0 1 1 12.63 8 4 4 0 0 1 16 11.37z" />
+    <line x1="17.5" x2="17.51" y1="6.5" y2="6.5" />
   </svg>
 );
 const LiIcon = () => (
   <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
-    <path d="M16 8a6 6 0 0 1 6 6v7h-4v-7a2 2 0 0 0-2-2 2 2 0 0 0-2 2v7h-4v-7a6 6 0 0 1 6-6z"/>
-    <rect width="4" height="12" x="2" y="9"/>
-    <circle cx="4" cy="4" r="2"/>
+    <path d="M16 8a6 6 0 0 1 6 6v7h-4v-7a2 2 0 0 0-2-2 2 2 0 0 0-2 2v7h-4v-7a6 6 0 0 1 6-6z" />
+    <rect width="4" height="12" x="2" y="9" />
+    <circle cx="4" cy="4" r="2" />
   </svg>
 );
 
@@ -27,29 +22,28 @@ const NAV_COLS = [
   {
     title: 'Portal',
     links: [
-      { to: '/',         label: 'Beranda' },
-      { to: '/team',     label: 'Tim Struktural' },
+      { to: '/', label: 'Beranda' },
+      { to: '/team', label: 'Tim Struktural' },
       { to: '/prestasi', label: 'Prestasi' },
       { to: '/projects', label: 'Proyek & Riset' },
-      { to: '/awards',   label: 'Penghargaan' },
+      { to: '/awards', label: 'Penghargaan' },
     ],
   },
   {
     title: 'Fokus Kegiatan',
     links: [
       { label: 'Riset Keamanan Siber' },
-      { label: 'Mentoring & Bimbingan' },
       { label: 'CTF & Kompetisi' },
-      { label: 'Study Group Nasional' },
+      { label: 'Study Group' },
       { label: 'Forensik Digital' },
     ],
   },
 ];
 
 const SOCIALS = [
-  { Icon: GhIcon,  href: '#', label: 'GitHub' },
-  { Icon: IgIcon,  href: '#', label: 'Instagram' },
-  { Icon: LiIcon,  href: '#', label: 'LinkedIn' },
+  { Icon: Mail, href: 'mailto:forestylab@gmail.com', label: 'Email' },
+  { Icon: IgIcon, href: 'https://www.instagram.com/foresty.laboratory/', label: 'Instagram' },
+  { Icon: LiIcon, href: 'https://www.linkedin.com/company/foresty/', label: 'LinkedIn' },
 ];
 
 export default function Footer() {
@@ -92,7 +86,7 @@ export default function Footer() {
             </div>
             <div className="flex items-center gap-2.5 text-[12px] text-zinc-600">
               <Mail size={12} className="text-red-700 shrink-0" />
-              <span>foresty@telkomuniversity.ac.id</span>
+              <span>forestylab@gmail.com</span>
             </div>
           </div>
 
